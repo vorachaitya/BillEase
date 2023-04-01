@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, depend_on_referenced_packages, non_constant_identifier_names
 
+import 'dart:async';
+
 import 'package:bill_ease/utils/kj_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
@@ -19,6 +21,10 @@ class BillView extends StatefulWidget {
 class _BillViewState extends State<BillView> {
   late File pdf_file;
   bool isLoading = false;
+  int? pages = 0;
+  bool isReady = false;
+  final Completer<PDFViewController> _controller =
+      Completer<PDFViewController>();
 
   Future<void> loadNetwork() async {
     setState(() {
@@ -60,23 +66,42 @@ class _BillViewState extends State<BillView> {
                 weight: FontWeight.bold),
           ),
         ),
-        body: Container(
-          child: (!isLoading)
-              ? (PDFView(
-                  filePath: pdf_file.path.toString(),
-                  fitPolicy: FitPolicy.BOTH,
-                  enableSwipe: true,
-                  swipeHorizontal: true,
-                  autoSpacing: false,
-                  pageFling: false,
-                  onError: (error) {
-                    print(error.toString());
-                  },
-                  onPageError: (page, error) {
-                    print('$page: ${error.toString()}');
-                  },
-                ))
-              : (Center(child: CircularProgressIndicator())),
-        ));
+        body: Builder(builder: (context) {
+          if (isLoading) {
+            return Center(
+              child: SizedBox(
+                height: KJTheme.getMobileWidth(context) / 15,
+                width: KJTheme.getMobileWidth(context) / 15,
+                child: const CircularProgressIndicator(
+                    strokeWidth: 3, color: KJTheme.nearlyBlue),
+              ),
+            );
+          } else {
+            return Expanded(
+              child: PDFView(
+                filePath: pdf_file.path,
+                enableSwipe: true,
+                swipeHorizontal: true,
+                autoSpacing: false,
+                pageFling: false,
+                onRender: (x) {
+                  setState(() {
+                    pages = x;
+                    isReady = true;
+                  });
+                },
+                onError: (error) {
+                  print(error.toString());
+                },
+                onPageError: (page, error) {
+                  print('$page: ${error.toString()}');
+                },
+                onViewCreated: (PDFViewController pdfViewController) {
+                  _controller.complete(pdfViewController);
+                },
+              ),
+            );
+          }
+        }));
   }
 }

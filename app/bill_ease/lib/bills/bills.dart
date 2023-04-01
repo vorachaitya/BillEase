@@ -47,20 +47,37 @@ class _BillingHistoryState extends State<BillingHistory> {
                   ),
                 ],
               ),
-              StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                stream: store.getCustomerBills(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<PDFModel> models = [];
-                    snapshot.data!.data()!.forEach((key, value) => {
-                          models.add(PDFModel(
-                              name: value["name"].toString(),
-                              timestamp: key.toString(),
-                              ipfsLink: value["ipfs_link"],
-                              total: value["total"].toString()))
-                        });
-                    return Expanded(
-                      child: ListView.builder(
+              Expanded(
+                child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                  stream: store.getCustomerBills(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      if (snapshot.data!.data()!.isEmpty) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "No Bills Generated!",
+                                style: KJTheme.subtitleText(
+                                    size:
+                                        KJTheme.getMobileWidth(context) / 27,
+                                    color: KJTheme.nearlyBlue,
+                                    weight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      List<PDFModel> models = [];
+                      snapshot.data!.data()!.forEach((key, value) => {
+                            models.add(PDFModel(
+                                name: value["name"].toString(),
+                                timestamp: key.toString(),
+                                ipfsLink: value["ipfs_link"].toString(),
+                                total: value["total"].toString()))
+                          });
+                      return ListView.builder(
                           physics: const BouncingScrollPhysics(),
                           padding: EdgeInsets.only(top: 40, left: 0, right: 0),
                           itemCount: models.length,
@@ -76,28 +93,9 @@ class _BillingHistoryState extends State<BillingHistory> {
                                 ),
                               ),
                             );
-                          }),
-                    );
-                  } else if (snapshot.data!.data()!.isEmpty) {
-                    return Expanded(
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "No Bills Generated!",
-                              style: KJTheme.subtitleText(
-                                  size: KJTheme.getMobileWidth(context) / 27,
-                                  color: KJTheme.nearlyBlue,
-                                  weight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  } else {
-                    return Expanded(
-                      child: Center(
+                          });
+                    } else {
+                      return Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -109,10 +107,10 @@ class _BillingHistoryState extends State<BillingHistory> {
                             )
                           ],
                         ),
-                      ),
-                    );
-                  }
-                },
+                      );
+                    }
+                  },
+                ),
               ),
             ],
           ),
