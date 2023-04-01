@@ -86,6 +86,31 @@ class KJStore {
         "name": authUser.currentUser!.email!,
         "total": total.toString(),
       });
+      var amt2 = 10 * (total / 10);
+      var amt = amt2.toInt();
+      var res = await _firestore
+          .collection("analysis")
+          .doc(authUser.currentUser!.email)
+          .get();
+      if (res.exists) {
+        var tot_ppl = res.data()![amt.toString()];
+        if (tot_ppl == null) {
+          await _firestore
+              .collection("analysis")
+              .doc(authUser.currentUser!.email)
+              .update({"$amt": 1});
+        } else {
+          await _firestore
+              .collection("analysis")
+              .doc(authUser.currentUser!.email)
+              .update({"$amt": tot_ppl + 1});
+        }
+      } else {
+        await _firestore
+            .collection("analysis")
+            .doc(authUser.currentUser!.email.toString())
+            .set({"$amt": 1});
+      }
     } catch (e) {
       print(e);
     }

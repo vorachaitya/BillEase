@@ -57,6 +57,7 @@ dependencies:
   pdf:
   http: ^0.13.5
   fluttertoast:
+  fl_chart:
   url_launcher:
 
 dev_dependencies:

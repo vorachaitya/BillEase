@@ -6,6 +6,8 @@ class KJTheme {
   static const Color nearlyBlue = Color(0xff7C3AED);
   static const Color nearlyGrey = Color(0xff3D4451);
   static const Color darkishGrey = Color(0xff1F2937);
+  static const Color contentColorPink = Color(0xfff106b6);
+  static const Color contentColorGreen = Color(0xff1e4603);
 
   static double getMobileWidth(BuildContext context) =>
       MediaQuery.of(context).size.width;
