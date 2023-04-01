@@ -4,6 +4,7 @@ import FormInput from "./FormInput";
 import Table from "./Table";
 import { createClient } from "@supabase/supabase-js";
 
+
 const supabaseUrl = "https://jzhlkcwolnaereowofhu.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6aGxrY3dvbG5hZXJlb3dvZmh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODAwOTk2NzgsImV4cCI6MTk5NTY3NTY3OH0.LyyqZm5NOyK8oRkLqMpzggpEExpX5z-nyyDWgRsaAk4";
@@ -64,15 +65,14 @@ console.log(user)
   };
   return (
     <>
-      <div className="container">
-        <div className="row">
-          <div className="col-sm-8">
-            <FormInput
+      <div>
+       
+            {/* <FormInput
               handleChange={handleChange}
               formInputData={formInputData}
               handleSubmit={handleSubmit}
               user={user}
-            />
+            /> */}
             <Table
               handleChange={handleChange}
               formInputData={formInputData}
@@ -80,9 +80,9 @@ console.log(user)
               user={user}
             />
           </div>
-          <div className="col-sm-4"></div>
-        </div>
-      </div>
+          
+        
+     
     </>
   );
 };
