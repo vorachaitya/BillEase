@@ -1,7 +1,7 @@
-body {
+/* body {
     background: #dfe9ff;
     font-family: Lato, sans-serif;
-}
+} */
 nav {
     height: 50px;
     background: #fff;
@@ -25,7 +25,7 @@ nav ul {
 }
 nav ul li {
     margin-right: 30px;
-    color: #4b71ff;
+    color: #7C3AED;
 }
 nav ul li:last-child {
     margin-right: 0px;

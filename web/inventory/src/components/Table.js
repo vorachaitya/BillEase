@@ -8,6 +8,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Barcode from "react-barcode";
 import "../css/table.css";
+import Navi from "./Navi";
 
 
 const supabaseUrl = "https://jzhlkcwolnaereowofhu.supabase.co";
@@ -36,7 +37,9 @@ const Table = ({ handleChange, formInputData, handleUpdate, user }) => {
   };
   let total = 0;
   let barcode = "";
-
+let item="";
+let price="";
+let quantity="";
   useEffect(() => {
     getStock();
     getInventory();
@@ -206,6 +209,8 @@ const Table = ({ handleChange, formInputData, handleUpdate, user }) => {
       </table> */}
 
       {/* <Export excelData={ans} fileName="Inventory" /> */}
+
+      <Navi></Navi>
      <h1 style={{textAlign:'center'}} className="fall-down" data-splitting>Inventory</h1>
       <table>
         
@@ -260,66 +265,79 @@ const Table = ({ handleChange, formInputData, handleUpdate, user }) => {
                     <box-icon type="solid" name="edit-alt"></box-icon>
                   </button>
                   <Modal show={show} onHide={handleClose} id={id}>
+                    {stock.map((data)=>{
+                      if(data.id===id){
+                        item = data.item;
+                        price = data.price;
+                        quantity = data.quantity;
+                        barcode = data.barcode;
+                      }
+                    })}
                     <Modal.Header closeButton>
-                      <Modal.Title>Modal heading</Modal.Title>
+                      <Modal.Title style={{color:'#7C3AED',fontWeight:'bold'}}>Update Inventory</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                       <div className="form-row row">
-                        <div className="col">
+                        <div className="col" >
+                          <label>Barcode</label>
                           <input
                             type="text"
                             onChange={handleChange}
                             value={formInputData.barcode}
                             name="barcode"
                             className="form-control"
-                            placeholder="Barcode"
+                            placeholder={barcode}
                           />
                         </div>
                         <div className="col">
+                          <label>Item</label>
                           <input
                             type="text"
                             onChange={handleChange}
                             value={formInputData.item}
+                            
                             name="item"
                             className="form-control"
-                            placeholder="Item Description"
+                            placeholder={item}
                           />
                         </div>
                         <div className="col">
+                        <label>Price</label>
                           <input
                             type="text"
                             onChange={handleChange}
                             value={formInputData.price}
                             name="price"
                             className="form-control"
-                            placeholder="Price"
+                            placeholder={price}
                           />
                         </div>
                         <div className="col">
+                        <label>Quantity</label>
                           <input
                             type="text"
                             onChange={handleChange}
                             value={formInputData.quantity}
                             name="quantity"
                             className="form-control"
-                            placeholder="Quantity"
+                            placeholder={quantity}
                           />
                         </div>
                       </div>
                     </Modal.Body>
                     <Modal.Footer>
-                      <Button variant="secondary" onClick={handleClose}>
+                      <button className="btn first" onClick={handleClose}>
                         Close
-                      </Button>
-                      <Button
-                        variant="primary"
+                      </button>
+                      <button className="btn first"
+
                         onClick={(event) => {
                           event.stopPropagation();
                           handleUpdate(id);
                         }}
                       >
                         Update
-                      </Button>
+                      </button>
                     </Modal.Footer>
                   </Modal>
                 </td>
