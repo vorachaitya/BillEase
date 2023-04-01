@@ -143,12 +143,10 @@ const FormInput = () => {
             className="form-control"
             placeholder="Quantity"
           />
-          <input
+          <button
             className="blueButton"
             type="submit"
-            onClick={handleSubmit}
-          
-          />
+            onClick={handleSubmit}>Add</button>
 
 
 </form>
