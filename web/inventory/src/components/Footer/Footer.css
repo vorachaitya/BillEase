@@ -1,16 +1,14 @@
-footer {
-    margin: 96px 0 22px 0;
-  }
+
   
   .attribution {
     text-align: center;
-    color:#989dc5
+    color:#7C3AED
   }
   
   .attribution a {
     color: #00106a;
     font-family: "Montserrat", sans-serif;
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 600;
     text-decoration: none;
   }

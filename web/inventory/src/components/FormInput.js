@@ -1,7 +1,8 @@
 import Formdata from "./Formdata";
 import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
-
+import Navi from "./Navi";
+import "../css/form.css"
 
 const supabaseUrl = "https://jzhlkcwolnaereowofhu.supabase.co";
 const supabaseKey =
@@ -55,20 +56,68 @@ const FormInput = () => {
       console.log(tableData);
     };
   return (
+    
+    // <>
+    // <Navi></Navi>
+    //   <div className="form-row row">
+    //     {/* <div className="col">
+    //       <input
+    //         type="text"
+    //         onChange={handleChange}
+    //         value={formInputData.barcode}
+    //         name="barcode"
+    //         className="form-control"
+    //         placeholder="Barcode"
+    //       />
+    //     </div> */}
+    //     <div className="col">
+    //       <input
+    //         type="text"
+    //         onChange={handleChange}
+    //         value={formInputData.item}
+    //         name="item"
+    //         className="form-control"
+    //         placeholder="Item Description"
+    //       />
+    //     </div>
+    //     <div className="col">
+    //       <input
+    //         type="text"
+    //         onChange={handleChange}
+    //         value={formInputData.price}
+    //         name="price"
+    //         className="form-control"
+    //         placeholder="Price"
+    //       />
+    //       </div>
+    //     <div className="col">
+    //       <input
+    //         type="text"
+    //         onChange={handleChange}
+    //         value={formInputData.quantity}
+    //         name="quantity"
+    //         className="form-control"
+    //         placeholder="Quantity"
+    //       />
+    //     </div>
+    //     <div className="col">
+    //       <input
+    //         type="submit"
+    //         onClick={handleSubmit}
+    //         className="btn btn-primary"
+    //       />
+    //     </div>
+    //   </div>
+    // </>
     <>
-      <div className="form-row row">
-        {/* <div className="col">
-          <input
-            type="text"
-            onChange={handleChange}
-            value={formInputData.barcode}
-            name="barcode"
-            className="form-control"
-            placeholder="Barcode"
-          />
-        </div> */}
-        <div className="col">
-          <input
+    <Navi/>
+    <form class="enterOrder">
+	<h3 class="enterOrderHeader" style={{color: 'white'}}>
+		Add Item
+	</h3>
+	
+	<label>Item</label>
+  <input
             type="text"
             onChange={handleChange}
             value={formInputData.item}
@@ -76,8 +125,7 @@ const FormInput = () => {
             className="form-control"
             placeholder="Item Description"
           />
-        </div>
-        <div className="col">
+          <label>Price</label>
           <input
             type="text"
             onChange={handleChange}
@@ -86,8 +134,7 @@ const FormInput = () => {
             className="form-control"
             placeholder="Price"
           />
-          </div>
-        <div className="col">
+          <label>Quantity</label>
           <input
             type="text"
             onChange={handleChange}
@@ -96,15 +143,15 @@ const FormInput = () => {
             className="form-control"
             placeholder="Quantity"
           />
-        </div>
-        <div className="col">
           <input
+            className="blueButton"
             type="submit"
             onClick={handleSubmit}
-            className="btn btn-primary"
+          
           />
-        </div>
-      </div>
+
+
+</form>
     </>
   );
 };

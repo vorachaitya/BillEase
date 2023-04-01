@@ -40,7 +40,7 @@ const Login = () => {
       setUsername(data[0].username);
       console.log(data[0].username);
       localStorage.setItem("username", JSON.stringify(data[0].username));
-      window.location.replace("/inventory");
+      window.location.replace("/home");
       setSuccessful(false);
     } else {
       console.error("wrong email and password");
@@ -75,7 +75,7 @@ const Login = () => {
             <div className="wrap-input100">
               <input
                 className="input100"
-                type="text"
+                type="password"
                 onChange={handleChange}
                 value={login.password}
                 name="password"

@@ -1,0 +1,100 @@
+
+.blueButton {
+	background-color: white;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 10px;
+	border: none;
+	display: inline-block;
+	cursor: pointer;
+	color: purple;
+	font-family: Arial;
+    font-weight: bolder;
+	font-size: 1rem;
+	padding: 9px 23px;
+	text-decoration: none;
+}
+
+
+
+.blueButton:active {
+	position: relative;
+	top: 1px;
+}
+
+
+.redButton {
+	-moz-box-shadow: inset 0px -3px 7px 0px #8a2a21;
+	-webkit-box-shadow: inset 0px -3px 7px 0px #8a2a21;
+	box-shadow: inset 0px -3px 7px 0px #8a2a21;
+	background-color: #c62d1f;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border: 1px solid #d02718;
+	display: inline-block;
+	cursor: pointer;
+	color: #ffffff;
+	font-family: Arial;
+	font-size: 15px;
+	padding: 9px 23px;
+	text-decoration: none;
+	text-shadow: 0px 1px 0px #810e05;
+}
+
+.redButton:hover {
+	background-color: #f24437;
+}
+
+.redButton:active {
+	position: relative;
+	top: 1px;
+}
+
+
+
+.enterOrder input[type=text] {
+	width: 95%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: block;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+	resize: none;
+	text-align: left;
+}
+
+.enterOrder input[type=text]:focus {
+	border: 1px solid #a8a8a8;
+}
+
+.enterOrder input[type=submit],
+.enterOrder input[type=button] {
+	margin: 13px 20px 10px 0px;
+}
+
+.enterOrder {
+	border-radius: 1rem;
+	background-color: #7C3AED;
+	padding: 40px;
+	width: 40%;
+	margin: 0 auto;
+	margin-top: 20px;
+	box-shadow: 1px 1px 5px #888888;
+
+}
+
+.enterOrderHeader {
+	text-align: center;
+}
+
+select {
+	width: 95%;
+	padding: 12px 20px;
+	margin: auto 0;
+	display: block;
+	border-radius: 4px;
+	text-align: left;
+	font-size: 16px;
+}
