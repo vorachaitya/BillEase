@@ -77,29 +77,27 @@ class _BillViewState extends State<BillView> {
               ),
             );
           } else {
-            return Expanded(
-              child: PDFView(
-                filePath: pdf_file.path,
-                enableSwipe: true,
-                swipeHorizontal: true,
-                autoSpacing: false,
-                pageFling: false,
-                onRender: (x) {
-                  setState(() {
-                    pages = x;
-                    isReady = true;
-                  });
-                },
-                onError: (error) {
-                  print(error.toString());
-                },
-                onPageError: (page, error) {
-                  print('$page: ${error.toString()}');
-                },
-                onViewCreated: (PDFViewController pdfViewController) {
-                  _controller.complete(pdfViewController);
-                },
-              ),
+            return PDFView(
+              filePath: pdf_file.path,
+              enableSwipe: true,
+              swipeHorizontal: true,
+              autoSpacing: false,
+              pageFling: false,
+              onRender: (x) {
+                setState(() {
+                  pages = x;
+                  isReady = true;
+                });
+              },
+              onError: (error) {
+                print(error.toString());
+              },
+              onPageError: (page, error) {
+                print('$page: ${error.toString()}');
+              },
+              onViewCreated: (PDFViewController pdfViewController) {
+                _controller.complete(pdfViewController);
+              },
             );
           }
         }));
