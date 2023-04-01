@@ -108,7 +108,7 @@ class _AppState extends State<App> {
                   user: user,
                 )
               : Customer(user: user),
-          user.userType == "retailer" ? UploadExcel() : Bills(),
+          user.userType == "retailer" ? UploadExcel() : BillingHistory(),
           Profile(
             user: user,
           ),
