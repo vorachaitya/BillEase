@@ -11,6 +11,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'models/table_product_model.dart';
+import 'package:bill_ease/analysis/retailer_line_chart_page.dart';
 
 class Home extends StatefulWidget {
   Home({super.key, required this.user});
@@ -345,22 +346,23 @@ class _HomeState extends State<Home> {
                 SizedBox(
                   height: KJTheme.getMobileHeight(context) * 0.4,
                   width: KJTheme.getMobileWidth(context),
-                  child: SfCartesianChart(
-                      primaryXAxis: CategoryAxis(
-                          axisLine: AxisLine(color: Colors.transparent)),
-                      series: <LineSeries<SalesData, String>>[
-                        LineSeries<SalesData, String>(
-                            color: KJTheme.nearlyBlue,
-                            dataSource: <SalesData>[
-                              SalesData('Jan', 1),
-                              SalesData('Feb', 18),
-                              SalesData('Mar', 14),
-                              SalesData('Apr', 12),
-                              SalesData('May', 0)
-                            ],
-                            xValueMapper: (SalesData sales, _) => sales.month,
-                            yValueMapper: (SalesData sales, _) => sales.sales)
-                      ]),
+                  // child: SfCartesianChart(
+                  //     primaryXAxis: CategoryAxis(
+                  //         axisLine: AxisLine(color: Colors.transparent)),
+                  //     series: <LineSeries<SalesData, String>>[
+                  //       LineSeries<SalesData, String>(
+                  //           color: KJTheme.nearlyBlue,
+                  //           dataSource: <SalesData>[
+                  //             SalesData('Jan', 1),
+                  //             SalesData('Feb', 18),
+                  //             SalesData('Mar', 14),
+                  //             SalesData('Apr', 12),
+                  //             SalesData('May', 0)
+                  //           ],
+                  //           xValueMapper: (SalesData sales, _) => sales.month,
+                  //           yValueMapper: (SalesData sales, _) => sales.sales)
+                  //     ]),
+                  child: LineChartRetailer(),
                 )
               ],
             ),
