@@ -3,6 +3,8 @@ import Formdata from "./Formdata";
 import { createClient } from "@supabase/supabase-js";
 import { Navigate } from "react-router-dom";
 import "../css/login.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const supabaseUrl = "https://jzhlkcwolnaereowofhu.supabase.co";
 const supabaseKey =
@@ -39,6 +41,7 @@ const Login = () => {
       console.log("successful");
       setUsername(data[0].username);
       console.log(data[0].username);
+      toast("Login successful")
       localStorage.setItem("username", JSON.stringify(data[0].username));
       window.location.replace("/home");
       setSuccessful(false);
@@ -95,6 +98,7 @@ const Login = () => {
                 >
                   Login
                 </button>
+                <ToastContainer />
               </div>
               
               <p>New here ? <a href="/register">Register</a></p>
@@ -103,35 +107,7 @@ const Login = () => {
         </div>
       </div>
     </>
-    // <>
-    //   <div classNameName="col">
-    //     <input
-    //       type="text"
-    //       onChange={handleChange}
-    //       value={login.email}
-    //       name="email"
-    //       classNameName="form-control"
-    //       placeholder="Email"
-    //     ></input>
-    //   </div>
-    //   <div classNameName="col">
-    //     <input
-    // type="text"
-    // onChange={handleChange}
-    // value={login.password}
-    // name="password"
-    // classNameName="form-control"
-    // placeholder="Password"
-    //     ></input>
-    //   </div>
-    //   <div classNameName="col">
-    //     <input
-    // type="submit"
-    // onClick={handleLogin}
-    // classNameName="btn btn-primary"
-    //     ></input>
-    //   </div>
-    // </>
+  
   );
 };
 

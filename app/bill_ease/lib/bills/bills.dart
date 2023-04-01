@@ -52,18 +52,21 @@ class _BillingHistoryState extends State<BillingHistory> {
                   stream: store.getCustomerBills(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      if (snapshot.data!.data()!.isEmpty) {
+                      if (snapshot.data!.data() == null) {
                         return Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                "No Bills Generated!",
-                                style: KJTheme.subtitleText(
-                                    size:
-                                        KJTheme.getMobileWidth(context) / 27,
-                                    color: KJTheme.nearlyBlue,
-                                    weight: FontWeight.w500),
+                              Chip(
+                                labelPadding: EdgeInsets.all(20),
+                                label: Text(
+                                  "No Bills Generated.",
+                                  style: KJTheme.subtitleText(
+                                      size:
+                                          KJTheme.getMobileWidth(context) / 26,
+                                      color: KJTheme.nearlyGrey,
+                                      weight: FontWeight.w500),
+                                ),
                               ),
                             ],
                           ),

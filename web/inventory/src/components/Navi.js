@@ -11,7 +11,8 @@ const Navi = () => {
         <>
             <nav>
                 <div className="logo">
-                    <div className="arrow-down"></div>
+                <img className="banner-image" src="https://i.ibb.co/x24Kt1W/Screenshot-183.png" alt="monitoring" />
+                  
                 </div>
                 <ul >
                     <a style={{ textDecoration: 'none', marginLeft:'1rem', fontSize:'large', fonteWeight:'700' }} href="/home"><li>Home</li></a>
