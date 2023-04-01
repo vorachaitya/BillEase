@@ -5,6 +5,7 @@ import 'package:bill_ease/home/models/verified_user.dart';
 import 'package:bill_ease/register/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class KJStore {
