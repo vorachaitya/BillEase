@@ -25,16 +25,18 @@ class KJStore {
         .snapshots();
   }
 
-  Stream<DocumentSnapshot<Map<String, dynamic>>>? getCustomerSpendings() {
-    try {
-      Stream<DocumentSnapshot<Map<String, dynamic>>> stream = _firestore
-          .collection("bills")
-          .doc(authUser.currentUser!.email)
-          .snapshots();
-      return stream;
-    } catch (e) {
-      return null;
-    }
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getCustomerGraph() {
+    return FirebaseFirestore.instance
+        .collection("bills")
+        .doc(FirebaseAuth.instance.currentUser!.email)
+        .snapshots();
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getCustomerSpendings() {
+    return _firestore
+        .collection("bills")
+        .doc(authUser.currentUser!.email)
+        .snapshots();
   }
 
   Future<dynamic> createUser(

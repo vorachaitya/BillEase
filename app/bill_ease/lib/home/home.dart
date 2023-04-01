@@ -355,29 +355,38 @@ class _HomeState extends State<Home> {
                         .doc(FirebaseAuth.instance.currentUser!.email)
                         .snapshots(),
                     builder: (context, snapshot) {
-                      Widget component_bills;
+                      Widget component_bills = Text("No Data for Analysis",
+                          style: KJTheme.subtitleText(
+                              size: KJTheme.getMobileWidth(context) / 27,
+                              color: KJTheme.nearlyGrey,
+                              weight: FontWeight.w500));
                       if (snapshot.hasData) {
-                        component_bills = Text('${snapshot.data.data()[0]}');
-                        List<FlSpot> plotPts = [];
-                        var bufferHelper = {};
-                        var helperList = [];
-                        snapshot.data.data()?.forEach((key, value) => {
-                              bufferHelper[key.toString()] = value.toString(),
-                              helperList.add(int.parse(key)),
-                            });
+                        if (snapshot.data.data() != null) {
+                          component_bills = Text('${snapshot.data.data()[0]}');
+                          List<FlSpot> plotPts = [];
+                          var bufferHelper = {};
+                          var helperList = [];
+                          snapshot.data.data()?.forEach((key, value) => {
+                                bufferHelper[key.toString()] = value.toString(),
+                                helperList.add(int.parse(key)),
+                              });
 
-                        helperList.sort();
+                          helperList.sort();
 
-                        helperList.forEach((element) {
-                          plotPts.add(FlSpot(double.parse(element.toString()),
-                              double.parse(bufferHelper[element.toString()])));
-                        });
+                          helperList.forEach((element) {
+                            plotPts.add(FlSpot(
+                                double.parse(element.toString()),
+                                double.parse(
+                                    bufferHelper[element.toString()])));
+                          });
 
-                        component_bills = LineChartRetailer(plotPts);
+                          return LineChartRetailer(plotPts);
+                        } else {
+                          return Center(child: component_bills);
+                        }
                       } else {
-                        component_bills = CircularProgressIndicator();
+                        return Center(child: component_bills);
                       }
-                      return Center(child: component_bills);
                     },
                   ),
                 )
