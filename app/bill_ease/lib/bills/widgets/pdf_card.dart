@@ -1,11 +1,11 @@
 // ignore_for_file: unnecessary_string_interpolations, must_be_immutable
 
-import 'package:bill_ease/customer/layout/bill_view_pdf_page.dart';
 import 'package:bill_ease/customer/models/pdfmodel.dart';
 import 'package:bill_ease/utils/kj_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../layout/bill_view_pdf_page.dart';
 
 class PDFCard extends StatefulWidget {
   PDFCard({super.key, required this.model});
