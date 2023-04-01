@@ -9,9 +9,9 @@ import FormInput from "./components/FormInput";
 import Formdata from "./components/Formdata";
 import Register from "./components/Register";
 import Login from "./components/Login";
-import Body from "./components/Error/Error"
+import Error from "./components/Error/Error"
 import Home from "./components/Home"
-
+import Footer from "./components/Footer/Footer"
 
 
 function App() {
@@ -29,7 +29,8 @@ function App() {
           <Route exact path='/inventory' element={<Formdata />} />
           <Route exact path='/register' element={<Register />} />
           <Route exact path='/add' element={<FormInput />} />
-          <Route exact path='*' element={<Body />} />
+          <Route exact path='/home' element={<Home />} />
+          <Route exact path='*' element={<Error />} />
         </Routes>
     <Footer/>
     </BrowserRouter>
