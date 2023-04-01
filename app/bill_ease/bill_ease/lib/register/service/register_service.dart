@@ -16,6 +16,7 @@ class RegisterService {
       required String password,
       required String name,
       required String phone,
+      required String user_type,
       required BuildContext context}) async {
     try {
       UserCredential? creds = await authUser.createUserWithEmailAndPassword(
@@ -23,7 +24,8 @@ class RegisterService {
       if (creds != null) {
         await store.createUser(
             credential: creds,
-            model: UserModel(email: email, name: name, phone: phone));
+            model: UserModel(
+                email: email, name: name, phone: phone, user_type: user_type));
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('session', creds.user!.uid);
       }
@@ -70,6 +72,7 @@ class RegisterService {
         await store.createUser(
             credential: creds,
             model: UserModel(
+                user_type: "",
                 email: creds.user!.email!,
                 name: creds.user!.displayName ?? "",
                 phone: ""));

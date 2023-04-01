@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_constructors, avoid_print
+// ignore_for_file: prefer_const_constructors, avoid_print, unused_field, must_be_immutable
 
 import 'package:bill_ease/common/kj_store.dart';
 import 'package:bill_ease/home/layout/bill_generator_page.dart';
 import 'package:bill_ease/home/models/sales_data_model.dart';
+import 'package:bill_ease/home/models/verified_user.dart';
 import 'package:bill_ease/utils/kj_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'models/table_product_model.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  Home({super.key, required this.user});
+  VerifiedUser user;
 
   @override
   State<Home> createState() => _HomeState();
@@ -117,70 +119,24 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _auth.currentUser!.displayName == null
-                    ? FutureBuilder(
-                        future:
-                            store.getUserDetails(uid: _auth.currentUser!.uid),
-                        builder: (_, snapshot) {
-                          if (snapshot.hasData) {
-                            return SizedBox(
-                              width: KJTheme.getMobileWidth(context) / 2.5,
-                              child: RichText(
-                                  text: TextSpan(children: [
-                                TextSpan(
-                                    text: "Hi,",
-                                    style: KJTheme.titleText(
-                                        size: KJTheme.getMobileWidth(context) *
-                                            0.12,
-                                        color: KJTheme.nearlyBlue,
-                                        weight: FontWeight.bold)),
-                                TextSpan(
-                                    text: "\n${snapshot.data}",
-                                    style: KJTheme.titleText(
-                                        size: KJTheme.getMobileWidth(context) /
-                                            15,
-                                        color: KJTheme.nearlyGrey,
-                                        weight: FontWeight.bold))
-                              ])),
-                            );
-                          } else {
-                            return RichText(
-                                text: TextSpan(children: [
-                              TextSpan(
-                                  text: "Hi,",
-                                  style: KJTheme.titleText(
-                                      size: KJTheme.getMobileWidth(context) *
-                                          0.12,
-                                      color: KJTheme.nearlyBlue,
-                                      weight: FontWeight.bold)),
-                              TextSpan(
-                                  text: "\nUser",
-                                  style: KJTheme.titleText(
-                                      size:
-                                          KJTheme.getMobileWidth(context) / 15,
-                                      color: KJTheme.darkishGrey,
-                                      weight: FontWeight.bold))
-                            ]));
-                          }
-                        })
-                    : SizedBox(
-                        width: KJTheme.getMobileWidth(context) / 2.5,
-                        child: RichText(
-                            text: TextSpan(children: [
-                          TextSpan(
-                              text: "Hi,",
-                              style: KJTheme.subtitleText(
-                                  size: KJTheme.getMobileWidth(context) * 0.12,
-                                  color: KJTheme.nearlyBlue,
-                                  weight: FontWeight.bold)),
-                          TextSpan(
-                              text: "\n${_auth.currentUser!.displayName}",
-                              style: KJTheme.titleText(
-                                  size: KJTheme.getMobileWidth(context) / 15,
-                                  color: KJTheme.nearlyGrey,
-                                  weight: FontWeight.bold))
-                        ])),
-                      ),
+                SizedBox(
+                  width: KJTheme.getMobileWidth(context) / 2.5,
+                  child: RichText(
+                      text: TextSpan(children: [
+                    TextSpan(
+                        text: "Hi,",
+                        style: KJTheme.titleText(
+                            size: KJTheme.getMobileWidth(context) * 0.12,
+                            color: KJTheme.nearlyBlue,
+                            weight: FontWeight.bold)),
+                    TextSpan(
+                        text: "\n${widget.user.name}",
+                        style: KJTheme.titleText(
+                            size: KJTheme.getMobileWidth(context) / 15,
+                            color: KJTheme.nearlyGrey,
+                            weight: FontWeight.bold))
+                  ])),
+                ),
                 Image.asset(
                   "assets/images/dreamer.png",
                   height: KJTheme.getMobileWidth(context) / 2.5,

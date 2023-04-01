@@ -1,3 +1,6 @@
+// ignore_for_file: must_be_immutable
+
+import 'package:bill_ease/home/models/verified_user.dart';
 import 'package:bill_ease/login/login.dart';
 import 'package:bill_ease/settings/widgets/profile_menu_widget.dart';
 import 'package:bill_ease/utils/kj_theme.dart';
@@ -7,7 +10,8 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  Profile({super.key, required this.user});
+  VerifiedUser user;
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -58,7 +62,7 @@ class _ProfileState extends State<Profile> {
                 alignment: Alignment.center,
                 margin: const EdgeInsets.only(bottom: 0),
                 child: Text(
-                  "Tushar Mali",
+                  widget.user.name!,
                   style: KJTheme.titleText(
                       size: size / 18,
                       weight: FontWeight.bold,
@@ -69,7 +73,7 @@ class _ProfileState extends State<Profile> {
                 alignment: Alignment.center,
                 margin: const EdgeInsets.only(bottom: 20),
                 child: Text(
-                  "tush1245@gmail.com",
+                  widget.user.email!,
                   style: KJTheme.subtitleText(
                       size: size / 25,
                       weight: FontWeight.w600,

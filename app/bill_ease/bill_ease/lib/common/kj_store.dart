@@ -1,6 +1,7 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, non_constant_identifier_names, unused_local_variable
 
 import 'package:bill_ease/excel/models/item_models.dart';
+import 'package:bill_ease/home/models/verified_user.dart';
 import 'package:bill_ease/register/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,12 +30,15 @@ class KJStore {
     }
   }
 
-  Future<String> getUserDetails({required String uid}) async {
+  Future<VerifiedUser?> getUserDetails() async {
     try {
-      var x = await _firestore.collection("users").doc(uid).get();
-      return x.data()!["name"];
+      var x = await _firestore
+          .collection("users")
+          .doc(authUser.currentUser!.uid)
+          .get();
+      return VerifiedUser.fromJson(x.data()!);
     } catch (e) {
-      return "";
+      return null;
     }
   }
 
@@ -59,10 +63,7 @@ class KJStore {
 
   Future<dynamic> uploadBill({required num total, required String cid}) async {
     try {
-      await FirebaseFirestore.instance
-          .collection("billingHistory")
-          .doc(cid.toString())
-          .set({
+      await _firestore.collection("billingHistory").doc(cid.toString()).set({
         "name": authUser.currentUser!.email!,
         "total": total.toString(),
       });
@@ -85,6 +86,32 @@ class KJStore {
     } catch (e) {
       print(e);
       return [];
+    }
+  }
+
+  Future<Map<String, dynamic>> customerBillSaver(
+      {required String scanBarCode}) async {
+    try {
+      Map<String, dynamic> identifier_dict = {};
+      String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+      DocumentSnapshot<Map<String, dynamic>> result = await _firestore
+          .collection("billingHistory")
+          .doc(scanBarCode.substring(21))
+          .get();
+
+      result.data()?.forEach((key, value) => {identifier_dict[key] = value});
+
+      var res = await _firestore.collection("bills").doc('email_id').update({
+        timestamp: {
+          "ipfs_link": scanBarCode,
+          "name": identifier_dict["name"],
+          "total": identifier_dict["total"]
+        }
+      });
+
+      return identifier_dict;
+    } catch (e) {
+      return {};
     }
   }
 }
