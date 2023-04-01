@@ -54,7 +54,7 @@ dependencies:
   flutter_ipfs:
   flutter_pdfview:
   path_provider:
-  pdf: ^3.4.1
+  pdf:
   http: ^0.13.5
   fluttertoast:
   fl_chart:
