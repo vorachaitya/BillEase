@@ -12,7 +12,7 @@ import FormInput from "./components/FormInput";
 import Formdata from "./components/Formdata";
 import Register from "./components/Register";
 import Login from "./components/Login";
-import Body from "./components/Error/Error"
+
 
 
 
