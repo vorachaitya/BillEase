@@ -1,8 +1,9 @@
-
+import Navi from './Navi';
 import '../css/home.css'
 const Home = () => {
   return (
     <>
+    <Navi/>
     {/* <nav>
   <div className="logo">
     <div className="arrow-down"></div>
@@ -24,7 +25,7 @@ const Home = () => {
     <div className="banner-text">
       <h1>BillEase</h1>
       
-      <button>Sign Up</button>
+      <button><a href='/inventory' style={{color:'white',textDecoration:'none'}}>Inventory</a></button>
     </div>
   </div>
   <img className="banner-image" src="https://i.ibb.co/K5QD8R8/inventory-management-mistakes.png" alt="monitoring" />

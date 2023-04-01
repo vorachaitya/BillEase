@@ -77,7 +77,7 @@ const Register = () => {
             <div className="wrap-input100">
               <input
                 className="input100"
-                type="text"
+                type="password"
                 onChange={handleChange}
                 value={formUserData.password}
                 name="password"
