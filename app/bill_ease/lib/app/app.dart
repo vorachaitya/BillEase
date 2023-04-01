@@ -1,6 +1,4 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, library_private_types_in_public_api
-
-import 'package:bill_ease/bills/bills.dart';
 import 'package:bill_ease/common/kj_store.dart';
 import 'package:bill_ease/customer/customer.dart';
 import 'package:bill_ease/excel/upload_excel.dart';
@@ -11,6 +9,8 @@ import 'package:bill_ease/utils/kj_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+
+import '../bills/bills.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
