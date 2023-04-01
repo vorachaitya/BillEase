@@ -39,37 +39,6 @@ class _CustomerState extends State<Customer> {
     });
   }
 
-  void saveBill() async {
-    if (_scanBarcode == "-1" ||
-        (!_scanBarcode.startsWith("https://ipfs.io/ipfs/"))) {
-      Fluttertoast.showToast(
-          msg: "Please Scan a valid QR to save your Bill ",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      return;
-    }
-    store.customerBillSaver(scanBarCode: _scanBarcode).then((value) {
-      if (value.isNotEmpty) {
-        Fluttertoast.showToast(
-            msg: "Bill Saved Successfully! ",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      }
-      setState(() {
-        identifier_dict = value;
-        _scanBarcode = "Unknown";
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,13 +113,22 @@ class _CustomerState extends State<Customer> {
               child: ElevatedButton(
                   onPressed: () {
                     scanQR().then((value) {
-                      if (_scanBarcode != "-1" ||
+                      if (_scanBarcode != "-1" &&
                           (_scanBarcode.startsWith("https://ipfs.io/ipfs/"))) {
                         PersistentNavBarNavigator.pushNewScreen(context,
                             screen: ScanQrPage(scanCode: _scanBarcode),
                             withNavBar: false,
                             pageTransitionAnimation:
                                 PageTransitionAnimation.scale);
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: "Please Scan a valid QR to show your Bill ",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: KJTheme.darkishGrey,
+                            textColor: Colors.white,
+                            fontSize: KJTheme.getMobileWidth(context) / 30);
                       }
                     });
                   },

@@ -1,6 +1,4 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, library_private_types_in_public_api
-
-import 'package:bill_ease/bills/bills.dart';
 import 'package:bill_ease/common/kj_store.dart';
 import 'package:bill_ease/customer/customer.dart';
 import 'package:bill_ease/excel/upload_excel.dart';
@@ -108,7 +106,7 @@ class _AppState extends State<App> {
                   user: user,
                 )
               : Customer(user: user),
-          user.userType == "retailer" ? UploadExcel() : Bills(),
+          UploadExcel(),
           Profile(
             user: user,
           ),
