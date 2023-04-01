@@ -10,6 +10,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
+import '../bills/bills.dart';
+
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
 
@@ -106,7 +108,7 @@ class _AppState extends State<App> {
                   user: user,
                 )
               : Customer(user: user),
-          UploadExcel(),
+          user.userType == "retailer" ? UploadExcel() : BillingHistory(),
           Profile(
             user: user,
           ),

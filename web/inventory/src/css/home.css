@@ -1,0 +1,133 @@
+body {
+    background: #dfe9ff;
+    font-family: Lato, sans-serif;
+}
+nav {
+    height: 50px;
+    background: #fff;
+    -webkit-box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, .15) ;
+    -moz-box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, .15) ;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, .15) ;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    z-index: 10;
+    position: relative;
+}
+nav ul {
+    margin: 0;
+    list-style: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+nav ul li {
+    margin-right: 30px;
+    color: #4b71ff;
+}
+nav ul li:last-child {
+    margin-right: 0px;
+}
+nav .logo {
+    height: 50px;
+    width: 75px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    margin-right: 30px;
+    background-color: #7C3AED;
+    cursor: pointer;
+}
+nav .arrow-down {
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 15px solid #fff;
+}
+.banner {
+    height: auto;
+    margin: 32px 0px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+@media (min-width: 768px) {
+    .banner {
+        height: 450px;
+        margin-bottom: 32px;
+   }
+}
+.banner .banner-image {
+    position: absolute;
+    opacity: 0.25;
+    right: 0px;
+    top: 0px;
+    height: 300px;
+    z-index: -1;
+    -webkit-filter: drop-shadow(0 3rem 0.05rem #7c3aed7d);
+    filter: drop-shadow(0 3rem 0.05rem #7c3aed7d);
+}
+@media (min-width: 768px) {
+    .banner .banner-image {
+        display: inherit;
+        height: 400px;
+        top: 0px;
+        opacity: 0.5;
+   }
+}
+@media (min-width: 992px) {
+    .banner .banner-image {
+       
+        opacity: 1;
+   }
+}
+.banner .banner-text {
+    max-width: 550px;
+    float: left;
+}
+.banner .banner-text h1 {
+    color: #7C3AED;
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 1rem;
+}
+.banner .banner-text p {
+    color: #7C3AED;
+    font-size: 1.05rem;
+    line-height: 1.75;
+}
+.banner button {
+    border: 0;
+    border-radius: 50px;
+    padding: 0.75rem 2.75rem;
+    background: #7C3AED;;
+    color: #fff;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, .25);
+    cursor: pointer;
+    position: relative;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    -webkit-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+.banner button:hover {
+    -webkit-transform: translateY(-5px);
+    -ms-transform: translateY(-5px);
+    -o-transform: translateY(-5px);
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, .25);
+}
+.mb-30 {
+    margin-bottom: 30px;
+}

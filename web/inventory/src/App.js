@@ -12,6 +12,7 @@ import FormInput from "./components/FormInput";
 import Formdata from "./components/Formdata";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import Body from "./components/Error/Error"
 
 
 
@@ -26,7 +27,7 @@ function App() {
         <Navbar/>
      
         <Routes>
-          {/* <Route exact path='/' element={<Login />} /> */}
+          <Route exact path='/' element={<Login />} />
           <Route exact path='/inventory' element={<Formdata />} />
           <Route exact path='/register' element={<Register />} />
           <Route exact path='/add' element={<FormInput />} />
