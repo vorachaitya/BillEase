@@ -1,16 +1,22 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable, unused_field, non_constant_identifier_names, prefer_final_fields, nullable_type_in_catch_clause
+// ignore_for_file: prefer_const_constructors, must_be_immutable, unused_field, non_constant_identifier_names, prefer_final_fields, nullable_type_in_catch_clause, unused_local_variable
 
 import 'package:bill_ease/common/kj_store.dart';
 import 'package:bill_ease/customer/layout/scan_qr_page.dart';
 import 'package:bill_ease/home/models/sales_data_model.dart';
 import 'package:bill_ease/home/models/verified_user.dart';
 import 'package:bill_ease/utils/kj_theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../analysis/customer_line_chart_page.dart';
 
 class Customer extends StatefulWidget {
   Customer({super.key, required this.user});
@@ -206,84 +212,196 @@ class _CustomerState extends State<Customer> {
             SizedBox(
               height: 20,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Total Spendings",
-                      style: KJTheme.titleText(
-                          size: KJTheme.getMobileWidth(context) / 21,
-                          color: KJTheme.nearlyBlue,
-                          weight: FontWeight.w700)),
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.only(bottom: 10),
-                  child: Text("₹ 27353.90",
-                      style: KJTheme.titleText(
-                          size: KJTheme.getMobileWidth(context) / 16,
-                          color: KJTheme.darkishGrey,
-                          weight: FontWeight.bold)),
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: KJTheme.nearlyGrey.withOpacity(0.2),
-                      )),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text("Total bills",
-                                style: KJTheme.titleText(
-                                    size: KJTheme.getMobileWidth(context) / 26,
-                                    color: KJTheme.nearlyBlue,
-                                    weight: FontWeight.w600)),
+            StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                stream: store.getCustomerSpendings(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data!.data()!.isNotEmpty) {
+                    int totalSpends = 0;
+                    snapshot.data!.data()!.forEach((key, value) {
+                      totalSpends += int.parse(value["total"]);
+                    });
+                    int total_bills = snapshot.data!.data()!.length;
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Total Spendings",
+                              style: KJTheme.titleText(
+                                  size: KJTheme.getMobileWidth(context) / 21,
+                                  color: KJTheme.nearlyBlue,
+                                  weight: FontWeight.w700)),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: Text("₹ $totalSpends",
+                              style: KJTheme.titleText(
+                                  size: KJTheme.getMobileWidth(context) / 16,
+                                  color: KJTheme.darkishGrey,
+                                  weight: FontWeight.bold)),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: KJTheme.nearlyGrey.withOpacity(0.2),
+                              )),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text("Total bills",
+                                        style: KJTheme.titleText(
+                                            size: KJTheme.getMobileWidth(
+                                                    context) /
+                                                26,
+                                            color: KJTheme.nearlyBlue,
+                                            weight: FontWeight.w600)),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(total_bills.toString(),
+                                        style: KJTheme.titleText(
+                                            size: KJTheme.getMobileWidth(
+                                                    context) /
+                                                24,
+                                            color: KJTheme.darkishGrey,
+                                            weight: FontWeight.bold)),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    child: Text("Average order value",
+                                        style: KJTheme.titleText(
+                                            size: KJTheme.getMobileWidth(
+                                                    context) /
+                                                26,
+                                            color: KJTheme.nearlyBlue,
+                                            weight: FontWeight.w600)),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                        "₹ ${totalSpends / total_bills}",
+                                        style: KJTheme.titleText(
+                                            size: KJTheme.getMobileWidth(
+                                                    context) /
+                                                24,
+                                            color: KJTheme.darkishGrey,
+                                            weight: FontWeight.bold)),
+                                  )
+                                ],
+                              ),
+                            ],
                           ),
-                          Container(
-                            alignment: Alignment.centerRight,
-                            child: Text("2520",
-                                style: KJTheme.titleText(
-                                    size: KJTheme.getMobileWidth(context) / 24,
-                                    color: KJTheme.darkishGrey,
-                                    weight: FontWeight.bold)),
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            alignment: Alignment.centerRight,
-                            child: Text("Average order value",
-                                style: KJTheme.titleText(
-                                    size: KJTheme.getMobileWidth(context) / 26,
-                                    color: KJTheme.nearlyBlue,
-                                    weight: FontWeight.w600)),
+                        )
+                      ],
+                    );
+                  } else {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Total Spendings",
+                              style: KJTheme.titleText(
+                                  size: KJTheme.getMobileWidth(context) / 21,
+                                  color: KJTheme.nearlyBlue,
+                                  weight: FontWeight.w700)),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: Text("₹ 0000",
+                              style: KJTheme.titleText(
+                                  size: KJTheme.getMobileWidth(context) / 16,
+                                  color: KJTheme.darkishGrey,
+                                  weight: FontWeight.bold)),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: KJTheme.nearlyGrey.withOpacity(0.2),
+                              )),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text("Total bills",
+                                        style: KJTheme.titleText(
+                                            size: KJTheme.getMobileWidth(
+                                                    context) /
+                                                26,
+                                            color: KJTheme.nearlyBlue,
+                                            weight: FontWeight.w600)),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    child: Text("0000",
+                                        style: KJTheme.titleText(
+                                            size: KJTheme.getMobileWidth(
+                                                    context) /
+                                                24,
+                                            color: KJTheme.darkishGrey,
+                                            weight: FontWeight.bold)),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    child: Text("Average order value",
+                                        style: KJTheme.titleText(
+                                            size: KJTheme.getMobileWidth(
+                                                    context) /
+                                                26,
+                                            color: KJTheme.nearlyBlue,
+                                            weight: FontWeight.w600)),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text("₹ 00",
+                                        style: KJTheme.titleText(
+                                            size: KJTheme.getMobileWidth(
+                                                    context) /
+                                                24,
+                                            color: KJTheme.darkishGrey,
+                                            weight: FontWeight.bold)),
+                                  )
+                                ],
+                              ),
+                            ],
                           ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text("₹ 120",
-                                style: KJTheme.titleText(
-                                    size: KJTheme.getMobileWidth(context) / 24,
-                                    color: KJTheme.darkishGrey,
-                                    weight: FontWeight.bold)),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+                        )
+                      ],
+                    );
+                  }
+                }),
             SizedBox(
               height: 20,
             ),
@@ -301,22 +419,48 @@ class _CustomerState extends State<Customer> {
                 SizedBox(
                   height: KJTheme.getMobileHeight(context) * 0.4,
                   width: KJTheme.getMobileWidth(context),
-                  child: SfCartesianChart(
-                      primaryXAxis: CategoryAxis(
-                          axisLine: AxisLine(color: Colors.transparent)),
-                      series: <LineSeries<SalesData, String>>[
-                        LineSeries<SalesData, String>(
-                            color: KJTheme.nearlyBlue,
-                            dataSource: <SalesData>[
-                              SalesData('Jan', 1),
-                              SalesData('Feb', 18),
-                              SalesData('Mar', 14),
-                              SalesData('Apr', 12),
-                              SalesData('May', 0)
-                            ],
-                            xValueMapper: (SalesData sales, _) => sales.month,
-                            yValueMapper: (SalesData sales, _) => sales.sales)
-                      ]),
+                  child: StreamBuilder<dynamic>(
+                    stream: FirebaseFirestore.instance
+                        .collection("bills")
+                        .doc(FirebaseAuth.instance.currentUser!.email)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      Widget component_bills;
+                      if (snapshot.hasData) {
+                        List<FlSpot> plotPts = [];
+                        var bufferHelper = {};
+                        var helperList = [];
+
+                        snapshot.data.data()?.forEach((key, value) => {
+                              bufferHelper[DateTime.fromMillisecondsSinceEpoch(
+                                      int.parse(key))
+                                  .minute
+                                  .toString()] = value["total"].toString(),
+                              helperList.add(
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                          int.parse(key))
+                                      .minute),
+                            });
+
+                        helperList.sort();
+
+                        helperList.forEach((element) {
+                          Fluttertoast.showToast(
+                              msg:
+                                  " ${bufferHelper[element.toString()].toString()}");
+                          plotPts.add(FlSpot(
+                              double.parse(element.toString()),
+                              double.parse(bufferHelper[element.toString()]
+                                  .toString())));
+                        });
+
+                        component_bills = LineChartCustomer(plotPts);
+                      } else {
+                        component_bills = CircularProgressIndicator();
+                      }
+                      return Center(child: component_bills);
+                    },
+                  ),
                 )
               ],
             ),

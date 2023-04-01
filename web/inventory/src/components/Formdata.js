@@ -52,6 +52,7 @@ console.log(user)
   };
 
   const handleUpdate = async (id) => {
+    
     const { data, error } = await supabase
       .from("inventory")
       .update({
@@ -62,6 +63,8 @@ console.log(user)
         username: `${obj}`,
       })
       .eq("id", id);
+
+      window.location.reload(true);
   };
   return (
     <>
