@@ -1,4 +1,10 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
+import 'package:bill_ease/excel/upload_excel.dart';
+import 'package:bill_ease/home/home.dart';
+import 'package:bill_ease/settings/profile.dart';
 import 'package:bill_ease/utils/kj_theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -29,26 +35,25 @@ class _AppState extends State<App> {
             border:
                 Border(top: BorderSide(color: Colors.grey.withOpacity(0.2)))),
         screens: [
-          // Home(),
-          // UploadExcel(),
-          Scaffold(),
-          Scaffold(),
-          Scaffold(
-            body: Center(
-                child: ElevatedButton(
-                    onPressed: () async {
-                      SharedPreferences pref =
-                          await SharedPreferences.getInstance();
-                      pref.remove("session").then((value) {
-                        PersistentNavBarNavigator.pushNewScreen(context,
-                            screen: Scaffold(),
-                            withNavBar: false,
-                            pageTransitionAnimation:
-                                PageTransitionAnimation.scale);
-                      });
-                    },
-                    child: Text("Logout"))),
-          ),
+          const Home(),
+          const UploadExcel(),
+          const Profile(),
+          // Scaffold(
+          //   body: Center(
+          //       child: ElevatedButton(
+          //           onPressed: () async {
+          //             SharedPreferences pref =
+          //                 await SharedPreferences.getInstance();
+          //             pref.remove("session").then((value) {
+          //               PersistentNavBarNavigator.pushNewScreen(context,
+          //                   screen: Scaffold(),
+          //                   withNavBar: false,
+          //                   pageTransitionAnimation:
+          //                       PageTransitionAnimation.scale);
+          //             });
+          //           },
+          //           child: Text("Logout"))),
+          // ),
         ],
         items: [
           PersistentBottomNavBarItem(
