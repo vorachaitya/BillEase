@@ -1,10 +1,11 @@
-// ignore_for_file: avoid_print, non_constant_identifier_names, unused_local_variable
+// ignore_for_file: avoid_print, non_constant_identifier_names, unused_local_variable, unnecessary_null_comparison, await_only_futures
 
 import 'package:bill_ease/excel/models/item_models.dart';
 import 'package:bill_ease/home/models/verified_user.dart';
 import 'package:bill_ease/register/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class KJStore {
   static final KJStore _apiService = KJStore._internal();
@@ -99,15 +100,36 @@ class KJStore {
           .doc(scanBarCode.substring(21))
           .get();
 
-      result.data()?.forEach((key, value) => {identifier_dict[key] = value});
+      result.data()!.forEach((key, value) => {identifier_dict[key] = value});
 
-      var res = await _firestore.collection("bills").doc('email_id').update({
-        timestamp: {
-          "ipfs_link": scanBarCode,
-          "name": identifier_dict["name"],
-          "total": identifier_dict["total"]
-        }
-      });
+      var res = await _firestore
+          .collection("bills")
+          .doc(authUser.currentUser!.email)
+          .get();
+
+      if (!res.exists) {
+        var res = await _firestore
+            .collection("bills")
+            .doc(authUser.currentUser!.email)
+            .set({
+          timestamp: {
+            "ipfs_link": scanBarCode,
+            "name": identifier_dict["name"],
+            "total": identifier_dict["total"]
+          }
+        });
+      } else {
+        var res = await _firestore
+            .collection("bills")
+            .doc(authUser.currentUser!.email)
+            .update({
+          timestamp: {
+            "ipfs_link": scanBarCode,
+            "name": identifier_dict["name"],
+            "total": identifier_dict["total"]
+          }
+        });
+      }
 
       return identifier_dict;
     } catch (e) {
