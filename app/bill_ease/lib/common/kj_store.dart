@@ -1,11 +1,10 @@
-// ignore_for_file: avoid_print, non_constant_identifier_names, unused_local_variable, unnecessary_null_comparison, await_only_futures
+// ignore_for_file: avoid_print, non_constant_identifier_names, unused_local_variable, unnecessary_null_comparison, await_only_futures, body_might_complete_normally_nullable
 
 import 'package:bill_ease/excel/models/item_models.dart';
 import 'package:bill_ease/home/models/verified_user.dart';
 import 'package:bill_ease/register/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class KJStore {
   static final KJStore _apiService = KJStore._internal();
@@ -18,6 +17,25 @@ class KJStore {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth authUser = FirebaseAuth.instance;
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getCustomerBills() {
+    return _firestore
+        .collection("bills")
+        .doc(authUser.currentUser!.email)
+        .snapshots();
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>>? getCustomerSpendings() {
+    try {
+      Stream<DocumentSnapshot<Map<String, dynamic>>> stream = _firestore
+          .collection("bills")
+          .doc(authUser.currentUser!.email)
+          .snapshots();
+      return stream;
+    } catch (e) {
+      return null;
+    }
+  }
 
   Future<dynamic> createUser(
       {required UserCredential credential, required UserModel model}) async {
