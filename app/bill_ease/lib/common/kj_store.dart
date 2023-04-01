@@ -18,6 +18,13 @@ class KJStore {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth authUser = FirebaseAuth.instance;
 
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getRetailerBills() {
+    return _firestore
+        .collection("analysis")
+        .doc(authUser.currentUser!.email)
+        .snapshots();
+  }
+
   Stream<DocumentSnapshot<Map<String, dynamic>>> getCustomerBills() {
     return _firestore
         .collection("bills")
