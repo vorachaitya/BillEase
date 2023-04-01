@@ -29,11 +29,11 @@ class _PDFCardState extends State<PDFCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: () => {
-              Navigator.push(context, MaterialPageRoute(builder: ((context) {
-                return BillView(widget.model.ipfsLink);
-              })))
-            },
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: ((context) {
+            return BillView(widget.model.ipfsLink);
+          })));
+        },
         child: Container(
             margin: const EdgeInsets.only(bottom: 15),
             padding: const EdgeInsets.all(10.0),
