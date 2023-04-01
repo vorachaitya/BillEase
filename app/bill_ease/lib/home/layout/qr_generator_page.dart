@@ -1,9 +1,8 @@
-// ignore_for_file: non_constant_identifier_names, must_be_immutable
+// ignore_for_file: non_constant_identifier_names, must_be_immutable, unnecessary_null_comparison, unused_field
 
 import 'package:bill_ease/app/app.dart';
 import 'package:bill_ease/common/kj_store.dart';
 import 'package:bill_ease/utils/kj_theme.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -17,8 +16,7 @@ class QrGeneratorPage extends StatefulWidget {
 
 class _QrGeneratorPageState extends State<QrGeneratorPage> {
   KJStore store = KJStore();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -65,86 +63,56 @@ class _QrGeneratorPageState extends State<QrGeneratorPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _auth.currentUser!.displayName == null
-                  ? Center(
-                      child: FutureBuilder(
-                          future:
-                              store.getUserDetails(uid: _auth.currentUser!.uid),
-                          builder: (_, snapshot) {
-                            if (snapshot.hasData) {
-                              return SizedBox(
-                                width: KJTheme.getMobileWidth(context),
-                                child: RichText(
-                                    textAlign: TextAlign.center,
-                                    text: TextSpan(children: [
-                                      TextSpan(
-                                          text: snapshot.data,
-                                          style: KJTheme.titleText(
-                                              size: KJTheme.getMobileWidth(
-                                                      context) /
-                                                  16,
-                                              color: KJTheme.darkishGrey,
-                                              weight: FontWeight.bold)),
-                                      TextSpan(
-                                          text: "\n${_auth.currentUser!.email}",
-                                          style: KJTheme.subtitleText(
-                                              size: KJTheme.getMobileWidth(
-                                                      context) /
-                                                  28,
-                                              color: KJTheme.nearlyGrey
-                                                  .withOpacity(0.8),
-                                              weight: FontWeight.w500))
-                                    ])),
-                              );
-                            } else {
-                              return RichText(
-                                  textAlign: TextAlign.center,
-                                  text: TextSpan(children: [
-                                    TextSpan(
-                                        text: "User",
-                                        style: KJTheme.titleText(
-                                            size: KJTheme.getMobileWidth(
-                                                    context) /
-                                                16,
-                                            color: KJTheme.darkishGrey,
-                                            weight: FontWeight.bold)),
-                                    TextSpan(
-                                        text: "\nuser@gmail.com",
-                                        style: KJTheme.subtitleText(
-                                            size: KJTheme.getMobileWidth(
-                                                    context) /
-                                                28,
-                                            color: KJTheme.nearlyGrey
-                                                .withOpacity(0.8),
-                                            weight: FontWeight.w500))
-                                  ]));
-                            }
-                          }),
-                    )
-                  : Center(
-                      child: SizedBox(
-                        width: KJTheme.getMobileWidth(context),
-                        child: RichText(
+              Center(
+                child: FutureBuilder(
+                    future: store.getUserDetails(),
+                    builder: (_, snapshot) {
+                      if (snapshot.hasData && snapshot != null) {
+                        return SizedBox(
+                          width: KJTheme.getMobileWidth(context),
+                          child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(children: [
+                                TextSpan(
+                                    text: snapshot.data!.name,
+                                    style: KJTheme.titleText(
+                                        size: KJTheme.getMobileWidth(context) /
+                                            16,
+                                        color: KJTheme.darkishGrey,
+                                        weight: FontWeight.bold)),
+                                TextSpan(
+                                    text: "\n${snapshot.data!.email}",
+                                    style: KJTheme.subtitleText(
+                                        size: KJTheme.getMobileWidth(context) /
+                                            28,
+                                        color:
+                                            KJTheme.nearlyGrey.withOpacity(0.8),
+                                        weight: FontWeight.w500))
+                              ])),
+                        );
+                      } else {
+                        return RichText(
                             textAlign: TextAlign.center,
                             text: TextSpan(children: [
                               TextSpan(
-                                  text: _auth.currentUser!.displayName,
+                                  text: "User",
                                   style: KJTheme.titleText(
                                       size:
                                           KJTheme.getMobileWidth(context) / 16,
                                       color: KJTheme.darkishGrey,
                                       weight: FontWeight.bold)),
                               TextSpan(
-                                  text: "\n${_auth.currentUser!.email}",
+                                  text: "\nuser@gmail.com",
                                   style: KJTheme.subtitleText(
                                       size:
                                           KJTheme.getMobileWidth(context) / 28,
                                       color:
                                           KJTheme.nearlyGrey.withOpacity(0.8),
                                       weight: FontWeight.w500))
-                            ])),
-                      ),
-                    ),
+                            ]));
+                      }
+                    }),
+              ),
               SizedBox(
                 height: KJTheme.getMobileWidth(context) / 10,
               ),

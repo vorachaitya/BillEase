@@ -54,6 +54,7 @@ dependencies:
   path_provider:
   pdf:
   http: ^0.13.5
+  fluttertoast:
 
 dev_dependencies:
   flutter_test:

@@ -1,108 +1,74 @@
-// ignore_for_file: prefer_const_constructors, avoid_print, unused_field, must_be_immutable
+// ignore_for_file: prefer_const_constructors, must_be_immutable, unused_field, non_constant_identifier_names, prefer_final_fields, nullable_type_in_catch_clause
 
 import 'package:bill_ease/common/kj_store.dart';
-import 'package:bill_ease/home/layout/bill_generator_page.dart';
+import 'package:bill_ease/customer/layout/scan_qr_page.dart';
 import 'package:bill_ease/home/models/sales_data_model.dart';
 import 'package:bill_ease/home/models/verified_user.dart';
 import 'package:bill_ease/utils/kj_theme.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import 'models/table_product_model.dart';
-
-class Home extends StatefulWidget {
-  Home({super.key, required this.user});
+class Customer extends StatefulWidget {
+  Customer({super.key, required this.user});
   VerifiedUser user;
-
   @override
-  State<Home> createState() => _HomeState();
+  State<Customer> createState() => _CustomerState();
 }
 
-class _HomeState extends State<Home> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+class _CustomerState extends State<Customer> {
+  String _scanBarcode = 'Unknown';
+  Map<String, dynamic> identifier_dict = {};
   KJStore store = KJStore();
 
-  List<TableProduct> products = <TableProduct>[
-    TableProduct(product_name: "Box", quantity: 10),
-    TableProduct(product_name: "Toys", quantity: 5),
-    TableProduct(product_name: "Paint Box", quantity: 12),
-    TableProduct(product_name: "Chocolates", quantity: 6),
-    TableProduct(product_name: "Icecream", quantity: 5),
-    TableProduct(product_name: "Others", quantity: 6),
-  ];
+  Future<void> scanQR() async {
+    String barcodeScanRes;
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.QR);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+    if (!mounted) return;
 
-  Widget bodyData() => DataTable(
-      onSelectAll: (b) {},
-      sortColumnIndex: 1,
-      columnSpacing: KJTheme.getMobileWidth(context) * 0.2,
-      sortAscending: true,
-      columns: <DataColumn>[
-        DataColumn(
-          label: Text(
-            "Product Name",
-            style: KJTheme.titleText(
-                size: KJTheme.getMobileWidth(context) / 28,
-                color: KJTheme.nearlyBlue,
-                weight: FontWeight.bold),
-          ),
-          numeric: false,
-          onSort: (i, b) {
-            print("$i $b");
-            setState(() {
-              products.sort((a, b) => a.product_name.compareTo(b.product_name));
-            });
-          },
-          tooltip: "To display name of product name",
-        ),
-        DataColumn(
-          label: Text(
-            "Quantity",
-            style: KJTheme.titleText(
-                size: KJTheme.getMobileWidth(context) / 28,
-                color: KJTheme.nearlyBlue,
-                weight: FontWeight.bold),
-          ),
-          numeric: true,
-          onSort: (i, b) {
-            setState(() {
-              products.sort((a, b) => a.quantity.compareTo(b.quantity));
-            });
-          },
-          tooltip: "To display available quantity of product",
-        ),
-      ],
-      rows: products
-          .map(
-            (name) => DataRow(
-              cells: [
-                DataCell(
-                  Text(
-                    name.product_name,
-                    style: KJTheme.subtitleText(
-                        size: KJTheme.getMobileWidth(context) / 30,
-                        color: KJTheme.nearlyGrey.withOpacity(0.8),
-                        weight: FontWeight.w600),
-                  ),
-                  showEditIcon: false,
-                  placeholder: false,
-                ),
-                DataCell(
-                  Text(
-                    name.quantity.toString(),
-                    style: KJTheme.subtitleText(
-                        size: KJTheme.getMobileWidth(context) / 30,
-                        color: KJTheme.nearlyGrey,
-                        weight: FontWeight.w600),
-                  ),
-                  showEditIcon: false,
-                  placeholder: false,
-                )
-              ],
-            ),
-          )
-          .toList());
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+    });
+  }
+
+  void saveBill() async {
+    if (_scanBarcode == "-1" ||
+        (!_scanBarcode.startsWith("https://ipfs.io/ipfs/"))) {
+      Fluttertoast.showToast(
+          msg: "Please Scan a valid QR to save your Bill ",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      return;
+    }
+    store.customerBillSaver(scanBarCode: _scanBarcode).then((value) {
+      if (value.isNotEmpty) {
+        Fluttertoast.showToast(
+            msg: "Bill Saved Successfully! ",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+      setState(() {
+        identifier_dict = value;
+        _scanBarcode = "Unknown";
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +104,7 @@ class _HomeState extends State<Home> {
                   ])),
                 ),
                 Image.asset(
-                  "assets/images/dreamer.png",
+                  "assets/images/money_qr.png",
                   height: KJTheme.getMobileWidth(context) / 2.5,
                   width: KJTheme.getMobileWidth(context) / 2.2,
                 )
@@ -155,7 +121,7 @@ class _HomeState extends State<Home> {
                 Container(
                   alignment: Alignment.centerLeft,
                   margin: EdgeInsets.only(top: 10),
-                  child: Text("Start Scanning",
+                  child: Text("Scan QR",
                       style: KJTheme.titleText(
                           size: KJTheme.getMobileWidth(context) / 11,
                           color: KJTheme.darkishGrey,
@@ -163,7 +129,7 @@ class _HomeState extends State<Home> {
                 ),
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: Text("Generate Qr-bill using barcode Scanner",
+                  child: Text("Scan your bills and save it to your profile.",
                       style: KJTheme.subtitleText(
                           size: KJTheme.getMobileWidth(context) / 27,
                           color: KJTheme.nearlyGrey,
@@ -174,52 +140,64 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: 20,
             ),
-            ElevatedButton(
-                onPressed: () {
-                  PersistentNavBarNavigator.pushNewScreen(context,
-                      screen: BillGeneratorPage(),
-                      withNavBar: false,
-                      pageTransitionAnimation: PageTransitionAnimation.scale);
-                },
-                style: KJTheme.buttonStyle(
-                  backColor: KJTheme.nearlyBlue,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 7),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/images/barcode.png",
-                        height: KJTheme.getMobileWidth(context) / 4,
-                        width: KJTheme.getMobileWidth(context) / 4,
-                        color: KJTheme.backGroundColor,
-                      ),
-                      SizedBox(
-                        width: KJTheme.getMobileWidth(context) / 2.25,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text("Scan Barcode",
-                                style: KJTheme.titleText(
-                                    size: KJTheme.getMobileWidth(context) / 16,
-                                    color: KJTheme.darkishGrey,
-                                    weight: FontWeight.bold)),
-                            Text(
-                                "Make sure that the barcode fits within the frame of the scanner.",
-                                textAlign: TextAlign.end,
-                                style: KJTheme.subtitleText(
-                                    size: KJTheme.getMobileWidth(context) / 31,
-                                    color: KJTheme.backGroundColor,
-                                    weight: FontWeight.w600))
-                          ],
-                        ),
-                      )
-                    ],
+            Center(
+              child: ElevatedButton(
+                  onPressed: () {
+                    scanQR().then((value) {
+                      if (_scanBarcode != "-1" ||
+                          (_scanBarcode.startsWith("https://ipfs.io/ipfs/"))) {
+                        PersistentNavBarNavigator.pushNewScreen(context,
+                            screen: ScanQrPage(scanCode: _scanBarcode),
+                            withNavBar: false,
+                            pageTransitionAnimation:
+                                PageTransitionAnimation.scale);
+                      }
+                    });
+                  },
+                  style: KJTheme.buttonStyle(
+                    backColor: KJTheme.nearlyBlue,
                   ),
-                )),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 7, top: 15),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/images/qr.png",
+                          height: KJTheme.getMobileWidth(context) / 4,
+                          width: KJTheme.getMobileWidth(context) / 4,
+                          color: KJTheme.backGroundColor,
+                        ),
+                        SizedBox(
+                          width: KJTheme.getMobileWidth(context) / 2.25,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text("Scan QR",
+                                  textAlign: TextAlign.center,
+                                  style: KJTheme.titleText(
+                                      size:
+                                          KJTheme.getMobileWidth(context) / 16,
+                                      color: KJTheme.backGroundColor,
+                                      weight: FontWeight.bold)),
+                              Text(
+                                  "Make sure that the QR fits within the frame of the scanner.",
+                                  textAlign: TextAlign.center,
+                                  style: KJTheme.subtitleText(
+                                      size:
+                                          KJTheme.getMobileWidth(context) / 31,
+                                      color:
+                                          KJTheme.darkishGrey.withOpacity(0.9),
+                                      weight: FontWeight.w600))
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  )),
+            ),
             Container(
               height: 0.4,
               margin: EdgeInsets.only(top: 30, bottom: 10),
@@ -231,7 +209,7 @@ class _HomeState extends State<Home> {
                 Container(
                   alignment: Alignment.centerLeft,
                   margin: EdgeInsets.only(top: 10),
-                  child: Text("Analytics",
+                  child: Text("Spendings",
                       style: KJTheme.titleText(
                           size: KJTheme.getMobileWidth(context) / 11,
                           color: KJTheme.darkishGrey,
@@ -239,7 +217,7 @@ class _HomeState extends State<Home> {
                 ),
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: Text("Access to your analytics and data on the go.",
+                  child: Text("View all your spendings, analytics and data.",
                       style: KJTheme.subtitleText(
                           size: KJTheme.getMobileWidth(context) / 27,
                           color: KJTheme.nearlyGrey,
@@ -255,7 +233,7 @@ class _HomeState extends State<Home> {
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: Text("Total sales",
+                  child: Text("Total Spendings",
                       style: KJTheme.titleText(
                           size: KJTheme.getMobileWidth(context) / 21,
                           color: KJTheme.nearlyBlue,
@@ -264,7 +242,7 @@ class _HomeState extends State<Home> {
                 Container(
                   alignment: Alignment.centerLeft,
                   margin: EdgeInsets.only(bottom: 10),
-                  child: Text("₹ 2253.90",
+                  child: Text("₹ 27353.90",
                       style: KJTheme.titleText(
                           size: KJTheme.getMobileWidth(context) / 16,
                           color: KJTheme.darkishGrey,
@@ -285,7 +263,7 @@ class _HomeState extends State<Home> {
                         children: [
                           Container(
                             alignment: Alignment.centerLeft,
-                            child: Text("Draft orders",
+                            child: Text("Total bills",
                                 style: KJTheme.titleText(
                                     size: KJTheme.getMobileWidth(context) / 26,
                                     color: KJTheme.nearlyBlue,
@@ -293,7 +271,7 @@ class _HomeState extends State<Home> {
                           ),
                           Container(
                             alignment: Alignment.centerRight,
-                            child: Text("200",
+                            child: Text("2520",
                                 style: KJTheme.titleText(
                                     size: KJTheme.getMobileWidth(context) / 24,
                                     color: KJTheme.darkishGrey,
@@ -315,7 +293,7 @@ class _HomeState extends State<Home> {
                           ),
                           Container(
                             alignment: Alignment.centerLeft,
-                            child: Text("₹ 22",
+                            child: Text("₹ 120",
                                 style: KJTheme.titleText(
                                     size: KJTheme.getMobileWidth(context) / 24,
                                     color: KJTheme.darkishGrey,
@@ -336,7 +314,7 @@ class _HomeState extends State<Home> {
                 Container(
                   alignment: Alignment.centerLeft,
                   margin: EdgeInsets.only(bottom: 10),
-                  child: Text("SALES OVER TIME",
+                  child: Text("SPENDINGS OVER TIME",
                       style: KJTheme.titleText(
                           size: KJTheme.getMobileWidth(context) / 23,
                           color: KJTheme.darkishGrey,
@@ -364,38 +342,6 @@ class _HomeState extends State<Home> {
                 )
               ],
             ),
-            Container(
-              height: 0.4,
-              margin: EdgeInsets.only(top: 20, bottom: 10),
-              width: KJTheme.getMobileWidth(context),
-              color: KJTheme.nearlyGrey.withOpacity(0.6),
-            ),
-            Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.only(top: 10),
-                  child: Text("Current Stock",
-                      style: KJTheme.titleText(
-                          size: KJTheme.getMobileWidth(context) / 11,
-                          color: KJTheme.darkishGrey,
-                          weight: FontWeight.bold)),
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                      "View availability of products in your inventory.",
-                      style: KJTheme.subtitleText(
-                          size: KJTheme.getMobileWidth(context) / 27,
-                          color: KJTheme.nearlyGrey,
-                          weight: FontWeight.w500)),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            bodyData()
           ],
         ),
       )),

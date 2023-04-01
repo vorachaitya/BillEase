@@ -1,14 +1,16 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, library_private_types_in_public_api
 
+import 'package:bill_ease/bills/bills.dart';
+import 'package:bill_ease/common/kj_store.dart';
+import 'package:bill_ease/customer/customer.dart';
 import 'package:bill_ease/excel/upload_excel.dart';
 import 'package:bill_ease/home/home.dart';
+import 'package:bill_ease/home/models/verified_user.dart';
 import 'package:bill_ease/settings/profile.dart';
 import 'package:bill_ease/utils/kj_theme.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
@@ -20,8 +22,74 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   final PersistentTabController _controller =
       PersistentTabController(initialIndex: 0);
+  KJStore store = KJStore();
+  bool loader = false;
+  late VerifiedUser user;
+
+  @override
+  void initState() {
+    getUserDetails();
+    super.initState();
+  }
+
+  getUserDetails() {
+    setState(() {
+      loader = true;
+    });
+    store.getUserDetails().then((value) {
+      setState(() {
+        loader = false;
+      });
+      user = value!;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    return Builder(builder: (context) {
+      if (loader) {
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: Scaffold(
+            backgroundColor: KJTheme.backGroundColor,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: KJTheme.getMobileWidth(context) / 15,
+                    width: KJTheme.getMobileWidth(context) / 15,
+                    child: const CircularProgressIndicator(
+                        strokeWidth: 3, color: KJTheme.nearlyBlue),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    child: Text("Rolling In",
+                        style: KJTheme.titleText(
+                            size: KJTheme.getMobileWidth(context) / 18,
+                            color: KJTheme.nearlyGrey,
+                            weight: FontWeight.bold)),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: Text("Gathering stuffs!",
+                        style: KJTheme.titleText(
+                            size: KJTheme.getMobileWidth(context) / 28,
+                            color: KJTheme.nearlyGrey.withOpacity(0.8),
+                            weight: FontWeight.w500)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      } else {
+        return buildWidget(context);
+      }
+    });
+  }
+
+  Widget buildWidget(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
       child: PersistentTabView(
@@ -35,25 +103,15 @@ class _AppState extends State<App> {
             border:
                 Border(top: BorderSide(color: Colors.grey.withOpacity(0.2)))),
         screens: [
-          const Home(),
-          const UploadExcel(),
-          const Profile(),
-          // Scaffold(
-          //   body: Center(
-          //       child: ElevatedButton(
-          //           onPressed: () async {
-          //             SharedPreferences pref =
-          //                 await SharedPreferences.getInstance();
-          //             pref.remove("session").then((value) {
-          //               PersistentNavBarNavigator.pushNewScreen(context,
-          //                   screen: Scaffold(),
-          //                   withNavBar: false,
-          //                   pageTransitionAnimation:
-          //                       PageTransitionAnimation.scale);
-          //             });
-          //           },
-          //           child: Text("Logout"))),
-          // ),
+          user.userType == "retailer"
+              ? Home(
+                  user: user,
+                )
+              : Customer(user: user),
+          user.userType == "retailer" ? UploadExcel() : Bills(),
+          Profile(
+            user: user,
+          ),
         ],
         items: [
           PersistentBottomNavBarItem(
@@ -68,13 +126,15 @@ class _AppState extends State<App> {
                   weight: FontWeight.w600)),
           PersistentBottomNavBarItem(
               icon: Icon(
-                Icons.inventory_outlined,
+                user.userType == "retailer"
+                    ? Icons.inventory_outlined
+                    : Icons.history_sharp,
                 size: KJTheme.getMobileWidth(context) / 17,
               ),
               inactiveColorPrimary: Colors.grey,
               activeColorSecondary: Colors.white,
               activeColorPrimary: KJTheme.nearlyBlue,
-              title: "Inventory",
+              title: user.userType == "retailer" ? "Inventory" : "Bills",
               textStyle: KJTheme.subtitleText(
                   size: KJTheme.getMobileWidth(context) / 30,
                   weight: FontWeight.w600)),

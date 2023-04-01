@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bill_ease/app/app.dart';
 import 'package:bill_ease/login/layout/login_page.dart';
 import 'package:bill_ease/register/models/user_type_model.dart';
@@ -148,7 +146,7 @@ class _RegisterState extends State<Register> {
                             return "Please enter email";
                           } else if (!RegExp(
                                   r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-                              .hasMatch(value)) {
+                              .hasMatch(value.trim())) {
                             return "Email is not valid";
                           }
                           return null;
@@ -217,7 +215,7 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                     const SizedBox(
-                      height: 5,
+                      height: 10,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,8 +223,8 @@ class _RegisterState extends State<Register> {
                         Text("What type of user are you?",
                             style: KJTheme.titleText(
                                 size: KJTheme.getMobileWidth(context) / 28,
-                                weight: FontWeight.w600,
-                                color: KJTheme.darkishGrey)),
+                                weight: FontWeight.w500,
+                                color: KJTheme.nearlyGrey)),
                         const SizedBox(
                           height: 10,
                         ),
@@ -293,7 +291,7 @@ class _RegisterState extends State<Register> {
                 ),
               ),
               const SizedBox(
-                height: 20,
+                height: 30,
               ),
               SizedBox(
                 height: KJTheme.getMobileWidth(context) / 7,
@@ -306,10 +304,11 @@ class _RegisterState extends State<Register> {
                         });
                         service
                             .createUser(
-                                name: _nameController.text,
-                                phone: _phoneController.text,
-                                email: _emailController.text,
-                                password: _passwordController.text,
+                                user_type: userType.name.trim(),
+                                name: _nameController.text.trim(),
+                                phone: _phoneController.text.trim(),
+                                email: _emailController.text.trim(),
+                                password: _passwordController.text.trim(),
                                 context: context)
                             .then((value) {
                           setState(() {
