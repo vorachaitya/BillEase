@@ -6,12 +6,17 @@ import 'package:bill_ease/home/models/sales_data_model.dart';
 import 'package:bill_ease/home/models/verified_user.dart';
 import 'package:bill_ease/utils/kj_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../analysis/customer_line_chart_page.dart';
 
 class Customer extends StatefulWidget {
   Customer({super.key, required this.user});
@@ -414,22 +419,48 @@ class _CustomerState extends State<Customer> {
                 SizedBox(
                   height: KJTheme.getMobileHeight(context) * 0.4,
                   width: KJTheme.getMobileWidth(context),
-                  child: SfCartesianChart(
-                      primaryXAxis: CategoryAxis(
-                          axisLine: AxisLine(color: Colors.transparent)),
-                      series: <LineSeries<SalesData, String>>[
-                        LineSeries<SalesData, String>(
-                            color: KJTheme.nearlyBlue,
-                            dataSource: <SalesData>[
-                              SalesData('Jan', 1),
-                              SalesData('Feb', 18),
-                              SalesData('Mar', 14),
-                              SalesData('Apr', 12),
-                              SalesData('May', 0)
-                            ],
-                            xValueMapper: (SalesData sales, _) => sales.month,
-                            yValueMapper: (SalesData sales, _) => sales.sales)
-                      ]),
+                  child: StreamBuilder<dynamic>(
+                    stream: FirebaseFirestore.instance
+                        .collection("bills")
+                        .doc(FirebaseAuth.instance.currentUser!.email)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      Widget component_bills;
+                      if (snapshot.hasData) {
+                        List<FlSpot> plotPts = [];
+                        var bufferHelper = {};
+                        var helperList = [];
+
+                        snapshot.data.data()?.forEach((key, value) => {
+                              bufferHelper[DateTime.fromMillisecondsSinceEpoch(
+                                      int.parse(key))
+                                  .minute
+                                  .toString()] = value["total"].toString(),
+                              helperList.add(
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                          int.parse(key))
+                                      .minute),
+                            });
+
+                        helperList.sort();
+
+                        helperList.forEach((element) {
+                          Fluttertoast.showToast(
+                              msg:
+                                  " ${bufferHelper[element.toString()].toString()}");
+                          plotPts.add(FlSpot(
+                              double.parse(element.toString()),
+                              double.parse(bufferHelper[element.toString()]
+                                  .toString())));
+                        });
+
+                        component_bills = LineChartCustomer(plotPts);
+                      } else {
+                        component_bills = CircularProgressIndicator();
+                      }
+                      return Center(child: component_bills);
+                    },
+                  ),
                 )
               ],
             ),
