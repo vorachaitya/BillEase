@@ -435,7 +435,7 @@ class _CustomerState extends State<Customer> {
                               bufferHelper[DateTime.fromMillisecondsSinceEpoch(
                                       int.parse(key))
                                   .minute
-                                  .toString()] = value["total"].toString(),
+                                  .toString()] = value["total"],
                               helperList.add(
                                   DateTime.fromMillisecondsSinceEpoch(
                                           int.parse(key))
@@ -445,9 +445,6 @@ class _CustomerState extends State<Customer> {
                         helperList.sort();
 
                         helperList.forEach((element) {
-                          Fluttertoast.showToast(
-                              msg:
-                                  " ${bufferHelper[element.toString()].toString()}");
                           plotPts.add(FlSpot(
                               double.parse(element.toString()),
                               double.parse(bufferHelper[element.toString()]
