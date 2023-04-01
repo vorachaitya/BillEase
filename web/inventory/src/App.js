@@ -4,8 +4,6 @@ import Body from './components/Error/Error';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
-import logo from "./logo.svg";
-import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -16,7 +14,6 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import Body from "./components/Error/Error"
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 
 function App() {
@@ -34,7 +31,7 @@ function App() {
           <Route exact path='/inventory' element={<Formdata />} />
           <Route exact path='/register' element={<Register />} />
           <Route exact path='/add' element={<FormInput />} />
-          <Route exact path='*' element={<Body />} />
+          {/* <Route exact path='*' element={<Body />} /> */}
         </Routes>
     
     </BrowserRouter>
