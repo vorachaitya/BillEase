@@ -16,6 +16,7 @@
     "bootstrap": "^5.2.3",
     "boxicons": "^2.1.4",
     "browser-router": "^0.2.0",
+    "dotenv": "^16.0.3",
     "file-saver": "^2.0.5",
     "flowbite": "^1.6.4",
     "popper.js": "^1.16.1",

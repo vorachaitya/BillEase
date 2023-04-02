@@ -45,7 +45,6 @@ const Login = () => {
       localStorage.setItem("username", JSON.stringify(data[0].username));
       window.location.replace("/home");
       setSuccessful(false);
-      toast("Logged In successfully!");
     } else {
       console.error("wrong email and password");
       toast("Invalid email or password!");
@@ -103,7 +102,7 @@ const Login = () => {
                 </button>
                 <ToastContainer />
               </div>
-              <ToastContainer />
+              
               <p>New here ? <a href="/register">Register</a></p>
             </div>
           </form>
