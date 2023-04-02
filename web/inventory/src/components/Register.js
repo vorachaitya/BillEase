@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "../css/register.css";
 import { createClient } from "@supabase/supabase-js";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const supabaseUrl = "https://jzhlkcwolnaereowofhu.supabase.co";
 const supabaseKey =
@@ -36,6 +38,8 @@ const Register = () => {
 
     const emptyInput = { username: "", email: "", password: "" };
     setFormUserData(emptyInput);
+    window.location.replace("/");
+    toast("Registered successfully!");
   };
   return (
     <>
@@ -97,6 +101,7 @@ const Register = () => {
                 >
                   Register
                 </button>
+                <ToastContainer />
               </div>
 
               <p>
