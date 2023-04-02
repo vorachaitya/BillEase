@@ -22,7 +22,8 @@ class KJTheme {
     double letterSpacing = -1,
     bool isShadow = false,
   }) {
-    return GoogleFonts.montserrat(
+    return TextStyle(
+        fontFamily: "Montserrat",
         fontSize: size,
         fontWeight: weight,
         wordSpacing: 1.4,
@@ -48,7 +49,8 @@ class KJTheme {
     double letterSpacing = -1,
     bool isShadow = false,
   }) {
-    return GoogleFonts.poppins(
+    return TextStyle(
+        fontFamily: "Poppins",
         fontSize: size,
         fontWeight: weight,
         wordSpacing: 1.4,
