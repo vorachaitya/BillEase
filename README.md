@@ -44,6 +44,12 @@ This has two access levels:
     - Can access his/her bill history for future use
     - View line chart depicting bill amount with thier dates in order to analyse thier expenditure and take necessary actions
     
+###  🤖Resources
+- [Demo Video](https://www.youtube.com/watch?v=wKIEDrzpnWc)
+- [GitHub Repository](https://github.com/vorachaitya/BillEase)
+- [Devfolio Submission](https://devfolio.co/kjscehack7/dashboard)
+- [APK Link](https://drive.google.com/file/d/1XgVvhZkxsS2Gm3Ulwy4ZCLStOMZk5lpb/view?usp=drivesdk)
+
 ### ⚙️ Tech Stack
 1. **Web Development**
 - Frontend : React.js ,TailwindCSS ,Bootstrap
