@@ -9,7 +9,8 @@ import Modal from "react-bootstrap/Modal";
 import Barcode from "react-barcode";
 import "../css/table.css";
 import Navi from "./Navi";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const supabaseUrl = "https://jzhlkcwolnaereowofhu.supabase.co";
 const supabaseKey =
@@ -67,6 +68,7 @@ let quantity="";
       .delete()
       .eq("barcode", barcode);
     window.location.reload(true);
+    toast("Product deleted successfully!");
   };
 
 
@@ -249,10 +251,12 @@ let quantity="";
                       handleDelete(data.barcode);
                     }}
                   >
+                  
                     <box-icon type="solid" name="trash-alt"></box-icon>
                   
                   </button>
                 </td>
+                  <ToastContainer />
                 <td data-label="Edit">
                   <button
                   onClick={(event) => {

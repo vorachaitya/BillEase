@@ -12,7 +12,8 @@ import Login from "./components/Login";
 import Error from "./components/Error/Error"
 import Home from "./components/Home"
 import Footer from "./components/Footer/Footer"
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
