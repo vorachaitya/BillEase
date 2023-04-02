@@ -6,13 +6,13 @@
   <br>
 </h1>
 <div align="center">
-  KJSCE 8.0 hack || Team AutoBots
+  KJSCE 7.0 hack || Team AutoBots
 </div>
 
 ### 🤔 Problem Statement
-Whenever we pay bills at shop, we get a bill's paper receipt which although is short in length but eventually when put together globally results in huge amount of paper loss. This paper is derived at the cost of cutting down of trees thereby increasing deforestation and ultimately global warming. 
+Whenever we pay bills at shop, we get a bill's paper receipt which although is short in length but eventually when put together globally results in huge amount of paper loss.Also, we usually tend to throw away the bill receipts as it is difficult to file them, thereby refraining us to refer past bill details in future.
 
-Also, we usually tend to throw away the bill receipts as it is difficult to file them, thereby refraining us to refer past bill details in future. At times, it becomes difficult for shop owner to keep a track of his current available stock manually.There are chances of the bills being tampered by third party as well.
+At times, it becomes difficult for shop owner to keep a track of his current available stock manually.There are chances of the bills being tampered by third party as well.
 
 ### 🧑‍🚀 Solution
 Thus, we have developed ***BillEase***, a system wherein hardcopy of bills, i.e, paper bills are not generated at any point of time thereby making it environment friendly to save trees.
@@ -20,7 +20,7 @@ Thus, we have developed ***BillEase***, a system wherein hardcopy of bills, i.e,
 To make life of shop owner further easier, we have developed an inventory management portal for them wherein they can keep track of their product stock easily.Now, the entire bill generation and payment system will be carried out smoothly. Entire process can be further understood as shown below:
 
 ### 😊 Flowchart
-<img src="https://user-images.githubusercontent.com/90527884/229319740-1f1bdd74-fd97-4f4e-b01e-02edea18f3e5.jpeg" alt="BillEase" width="1000" height="550">
+<img src="https://user-images.githubusercontent.com/90527884/229328914-dbceac19-8f44-4416-b107-198958bb4e7c.jpeg" alt="BillEase" width="1000" height="550">
 
 ### ✨Features
 BillEase is splitted into parts: **web app** and **mobile app**. It has two access levels - **shop owner** and **customer**.
@@ -46,10 +46,10 @@ This has two access levels:
     - View line chart depicting bill amount with thier dates in order to analyse thier expenditure and take necessary actions
     
 ### ⚙️ Tech Stack
-1. Web Development
+1. **Web Development**
 - Frontend : React.js ,TailwindCSS ,Bootstrap
 - Backend : Firebase
-2. App Development
+2. **App Development**
 - Frontend :Flutter, Dart
 - Backend : Firebase
 
