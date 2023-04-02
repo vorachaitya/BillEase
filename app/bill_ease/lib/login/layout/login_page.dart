@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: KJTheme.titleText(
                           size: KJTheme.getMobileWidth(context) / 24,
                           weight: FontWeight.w500,
-                          color: KJTheme.nearlyGrey),
+                          color: KJTheme.nearlyGrey.withOpacity(0.7)),
                     ),
                   ),
                 ],

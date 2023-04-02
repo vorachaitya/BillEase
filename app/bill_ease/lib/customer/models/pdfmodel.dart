@@ -19,13 +19,12 @@ class PDFModel {
     );
   }
 
-  //Sending Data to the server
   Map<String, dynamic> toMap() {
     return {
-      '${name}': name,
-      '${total}': total,
-      '${ipfsLink}': ipfsLink,
-      '${timestamp}': timestamp,
+      'name': name,
+      'total': total,
+      'ipfsLink': ipfsLink,
+      'timestamp': timestamp,
     };
   }
 }
