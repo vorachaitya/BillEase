@@ -3,7 +3,8 @@ import Export from "./Export";
 import FormInput from "./FormInput";
 import Table from "./Table";
 import { createClient } from "@supabase/supabase-js";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const supabaseUrl = "https://jzhlkcwolnaereowofhu.supabase.co";
 const supabaseKey =
@@ -65,6 +66,7 @@ console.log(user)
       .eq("id", id);
 
       window.location.reload(true);
+      toast("Product updated successfully!");
   };
   return (
     <>
@@ -82,6 +84,7 @@ console.log(user)
               handleUpdate={handleUpdate}
               user={user}
             />
+            <ToastContainer />
           </div>
           
         

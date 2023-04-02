@@ -2,7 +2,9 @@ import Formdata from "./Formdata";
 import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import Navi from "./Navi";
-import "../css/form.css"
+import "../css/form.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const supabaseUrl = "https://jzhlkcwolnaereowofhu.supabase.co";
 const supabaseKey =
@@ -54,6 +56,9 @@ const FormInput = () => {
       setFormInputData(emptyInput);
       window.location.reload(true);
       console.log(tableData);
+
+      toast("Product added successfully!");
+      // <ToastContainer />
     };
   return (
     
@@ -143,12 +148,13 @@ const FormInput = () => {
             className="form-control"
             placeholder="Quantity"
           />
-          <input
+          <button
             className="blueButton"
             type="submit"
             onClick={handleSubmit}
           
-          />
+          >Add</button>
+           <ToastContainer />
 
 
 </form>
