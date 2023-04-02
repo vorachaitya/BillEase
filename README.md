@@ -13,7 +13,7 @@ Whenever we pay bills at shop, we get a bill's paper receipt which although is s
 
 At times, it becomes difficult for shop owner to keep a track of his current available stock manually.There are chances of the bills being tampered by third party as well.
 
-### 🧑‍🚀 Solution
+### 🚀 Solution
 Thus, we have developed ***BillEase***, a system wherein hardcopy of bills, i.e, paper bills are not generated at any point of time thereby making it environment friendly to save trees.
 
 To make life of shop owner further easier, we have developed an inventory management portal for them wherein they can keep track of their product stock easily.Now, the entire bill generation and payment system will be carried out smoothly. Entire process can be further understood as shown below:
@@ -47,7 +47,7 @@ This has two access levels:
 ###  🤖Resources
 - [Demo Video](https://www.youtube.com/watch?v=wKIEDrzpnWc)
 - [GitHub Repository](https://github.com/vorachaitya/BillEase)
-- [Devfolio Submission](https://devfolio.co/kjscehack7/dashboard)
+- [Devfolio Submission](https://devfolio.co/projects/billease-e55b)
 - [APK Link](https://drive.google.com/file/d/1XgVvhZkxsS2Gm3Ulwy4ZCLStOMZk5lpb/view?usp=drivesdk)
 
 ### ⚙️ Tech Stack
