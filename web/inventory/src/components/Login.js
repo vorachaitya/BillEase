@@ -3,6 +3,8 @@ import Formdata from "./Formdata";
 import { createClient } from "@supabase/supabase-js";
 import { Navigate } from "react-router-dom";
 import "../css/login.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const supabaseUrl = "https://jzhlkcwolnaereowofhu.supabase.co";
 const supabaseKey =
@@ -42,9 +44,12 @@ const Login = () => {
       localStorage.setItem("username", JSON.stringify(data[0].username));
       window.location.replace("/home");
       setSuccessful(false);
+      toast("Logged In successfully!");
     } else {
       console.error("wrong email and password");
+      toast("Invalid email or password!");
     }
+    
   };
 
   return (
@@ -96,7 +101,7 @@ const Login = () => {
                   Login
                 </button>
               </div>
-              
+              <ToastContainer />
               <p>New here ? <a href="/register">Register</a></p>
             </div>
           </form>
