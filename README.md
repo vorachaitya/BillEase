@@ -1,4 +1,3 @@
-## BillEase
 <h1 align="center">
   <a href="https://github.com/vorachaitya/BillEase">
     <img src="https://user-images.githubusercontent.com/90527884/229326899-5ed8c147-5a63-4816-ae9f-4fbfae8b58c3.png" alt="BillEase" width="300" height="250">
