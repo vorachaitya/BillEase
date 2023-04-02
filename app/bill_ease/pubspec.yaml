@@ -45,20 +45,23 @@ dependencies:
   firebase_auth: ^4.2.9
   shared_preferences: ^2.0.15
   intl: 
+  # syncfusion_flutter_pdfviewer: 
   flutter_slidable: ^2.0.0
   google_sign_in: ^6.0.2
   syncfusion_flutter_charts: ^21.1.37
   file_picker:
   excel:
   flutter_barcode_scanner: ^2.0.0
-  flutter_ipfs:
-  flutter_pdfview:
+  flutter_ipfs: any
+  # flutter_pdfview:
   path_provider:
-  pdf:
+  pdf: ^3.6.0
   http: ^0.13.5
   fluttertoast:
   fl_chart:
   url_launcher:
+  pdf_viewer_plugin: ^2.0.1
+  
 
 dev_dependencies:
   flutter_test:

@@ -341,7 +341,8 @@ class _HomeState extends State<Home> {
                                     ),
                                     Container(
                                       alignment: Alignment.centerLeft,
-                                      child: Text("₹ ${total_sales / orders}",
+                                      child: Text(
+                                          "₹ ${(total_sales / orders).round()}",
                                           style: KJTheme.titleText(
                                               size: KJTheme.getMobileWidth(
                                                       context) /

@@ -7,14 +7,16 @@ import 'package:bill_ease/excel/models/item_models.dart';
 import 'package:bill_ease/home/layout/qr_generator_page.dart';
 import 'package:bill_ease/utils/kj_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:excel/excel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ipfs/flutter_ipfs.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
+// import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class PDFGeneratorPage extends StatefulWidget {
@@ -33,8 +35,8 @@ class _PDFGeneratorPageState extends State<PDFGeneratorPage> {
     ["Product", "Price", "Quantity"]
   ];
   bool loading = false;
-  final Completer<PDFViewController> _controller =
-      Completer<PDFViewController>();
+  // final Completer<PDFViewController> _controller =
+  //     Completer<PDFViewController>();
   int? pages = 0;
   bool isReady = false;
 
@@ -214,28 +216,29 @@ class _PDFGeneratorPageState extends State<PDFGeneratorPage> {
             color: KJTheme.nearlyGrey.withOpacity(0.6),
           ),
           Expanded(
-            child: PDFView(
-              filePath: file.path,
-              enableSwipe: true,
-              swipeHorizontal: true,
-              autoSpacing: false,
-              pageFling: false,
-              onRender: (x) {
-                setState(() {
-                  pages = x;
-                  isReady = true;
-                });
-              },
-              onError: (error) {
-                print(error.toString());
-              },
-              onPageError: (page, error) {
-                print('$page: ${error.toString()}');
-              },
-              onViewCreated: (PDFViewController pdfViewController) {
-                _controller.complete(pdfViewController);
-              },
-            ),
+            child: PdfView(path: file.path),
+            // child: PDFView(
+            //   filePath: file.path,
+            //   enableSwipe: true,
+            //   swipeHorizontal: true,
+            //   autoSpacing: false,
+            //   pageFling: false,
+            //   onRender: (x) {
+            //     setState(() {
+            //       pages = x;
+            //       isReady = true;
+            //     });
+            //   },
+            //   onError: (error) {
+            //     print(error.toString());
+            //   },
+            //   onPageError: (page, error) {
+            //     print('$page: ${error.toString()}');
+            //   },
+            //   onViewCreated: (PDFViewController pdfViewController) {
+            //     _controller.complete(pdfViewController);
+            //   },
+            // ),
           ),
         ],
       ),

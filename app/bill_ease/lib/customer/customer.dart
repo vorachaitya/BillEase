@@ -293,7 +293,7 @@ class _CustomerState extends State<Customer> {
                                     Container(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                          "₹ ${totalSpends / total_bills}",
+                                          "₹ ${(totalSpends / total_bills).round()}",
                                           style: KJTheme.titleText(
                                               size: KJTheme.getMobileWidth(
                                                       context) /

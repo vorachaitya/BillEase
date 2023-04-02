@@ -5,13 +5,13 @@ import 'dart:io';
 import 'package:bill_ease/common/kj_store.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:bill_ease/utils/kj_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ScanQrPage extends StatefulWidget {
@@ -28,8 +28,6 @@ class _ScanQrPageState extends State<ScanQrPage> {
   int? pages = 0;
   bool isReady = false;
   KJStore store = KJStore();
-  final Completer<PDFViewController> _controller =
-      Completer<PDFViewController>();
   String _scanBarcode = "Unknown";
 
   Future<void> scanQR() async {
@@ -192,28 +190,7 @@ class _ScanQrPageState extends State<ScanQrPage> {
             color: KJTheme.nearlyGrey.withOpacity(0.6),
           ),
           Expanded(
-            child: PDFView(
-              filePath: pdf_file.path,
-              enableSwipe: true,
-              swipeHorizontal: true,
-              autoSpacing: false,
-              pageFling: false,
-              onRender: (x) {
-                setState(() {
-                  pages = x;
-                  isReady = true;
-                });
-              },
-              onError: (error) {
-                print(error.toString());
-              },
-              onPageError: (page, error) {
-                print('$page: ${error.toString()}');
-              },
-              onViewCreated: (PDFViewController pdfViewController) {
-                _controller.complete(pdfViewController);
-              },
-            ),
+            child: PdfView(path: pdf_file.path),
           ),
         ],
       ),

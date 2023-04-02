@@ -4,11 +4,11 @@ import 'dart:async';
 
 import 'package:bill_ease/utils/kj_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
 
 class BillView extends StatefulWidget {
   const BillView(this.pdfLink, {Key? key}) : super(key: key);
@@ -23,8 +23,6 @@ class _BillViewState extends State<BillView> {
   bool isLoading = false;
   int? pages = 0;
   bool isReady = false;
-  final Completer<PDFViewController> _controller =
-      Completer<PDFViewController>();
 
   Future<void> loadNetwork() async {
     setState(() {
@@ -77,28 +75,7 @@ class _BillViewState extends State<BillView> {
               ),
             );
           } else {
-            return PDFView(
-              filePath: pdf_file.path,
-              enableSwipe: true,
-              swipeHorizontal: true,
-              autoSpacing: false,
-              pageFling: false,
-              onRender: (x) {
-                setState(() {
-                  pages = x;
-                  isReady = true;
-                });
-              },
-              onError: (error) {
-                print(error.toString());
-              },
-              onPageError: (page, error) {
-                print('$page: ${error.toString()}');
-              },
-              onViewCreated: (PDFViewController pdfViewController) {
-                _controller.complete(pdfViewController);
-              },
-            );
+            return PdfView(path: pdf_file.path);
           }
         }));
   }
