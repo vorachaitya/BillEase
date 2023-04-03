@@ -5,7 +5,7 @@
   <br>
 </h1>
 <div align="center">
-  KJSCE 7.0 hack || Team AutoBots
+  Finalists KJSCE 7.0 hack || Team AutoBots
 </div>
 
 ### 🤔 Problem Statement
